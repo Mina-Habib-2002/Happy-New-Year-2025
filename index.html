@@ -15,16 +15,16 @@
             --spacing-unit: clamp(0.5rem, 2vw, 1.5rem);
         }
 
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         html, body {
@@ -32,29 +32,19 @@
             overflow-x: hidden;
             font-family: Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
-            background-color: #000;
         }
 
-        /* Hardware acceleration */
-        body * {
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            perspective: 1000;
-            will-change: transform;
-        }
-        
         .background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://i.pinimg.com/originals/0b/b0/20/0bb020f9b4c2e2fdc805a1b9aa1e2019.gif') center center;
+            background: url('https://media.giphy.com/media/pVGsAWjzvXcZW4ZBTE/giphy.gif') center center;
             background-size: cover;
             z-index: -2;
-            transform: translate3d(0,0,0);
         }
-        
+
         .content {
             position: relative;
             z-index: 1;
@@ -67,7 +57,6 @@
             color: var(--text-color);
             background: var(--dark-overlay);
             padding: var(--spacing-unit);
-            transform: translate3d(0,0,0);
         }
 
         h1 {
@@ -124,18 +113,6 @@
             appearance: none;
             -webkit-appearance: none;
             overflow: auto;
-            transition: border-color 0.3s ease;
-        }
-
-        /* Hide scrollbar for name input */
-        .name-input::-webkit-scrollbar,
-        .message-input::-webkit-scrollbar {
-            display: none;
-        }
-
-        .name-input, .message-input {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
 
         .name-input {
@@ -145,12 +122,6 @@
         .message-input {
             height: clamp(100px, 15vh, 150px);
         }
-
-        .name-input:focus, .message-input:focus {
-            border-color: var(--accent-color);
-            outline: none;
-        }
-
         .send-button {
             padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 2);
             background: var(--secondary-color);
@@ -159,13 +130,8 @@
             border-radius: 20px;
             cursor: pointer;
             font-size: clamp(1rem, 2vw, 1.1rem);
-            transition: transform 0.2s ease, background-color 0.3s ease;
+            transition: all 0.3s ease;
             touch-action: manipulation;
-            user-select: none;
-        }
-
-        .send-button:active {
-            transform: scale(0.98);
         }
 
         .admin-panel {
@@ -186,11 +152,6 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease;
-        }
-
-        .notification-icon:active {
-            transform: scale(0.95);
         }
 
         .notification-count {
@@ -258,7 +219,6 @@
             font-size: 24px;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .content {
                 padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
@@ -312,7 +272,7 @@
         
         <div class="message-area">
             <h3 class="message-title">Type Your Name Here</h3>
-            <textarea id="nameInput" class="name-input" placeholder="Enter your name..." rows="1"></textarea>
+            <textarea id="nameInput" class="name-input" placeholder="Enter your name..."></textarea>
             
             <h3 class="message-title">Leave A Message To Mina</h3>
             <textarea id="messageInput" class="message-input" placeholder="Type your message here..."></textarea>
@@ -321,58 +281,32 @@
     </div>
 
     <script>
-        let canvas, ctx;
+        // Constants
         const ADMIN_PASSWORD = 'MinaPrivates';
+        const FIREWORK_INTERVAL = 1000;
+        let canvas, ctx;
         let isAdmin = false;
-        let animationFrameId;
-        let lastTime = 0;
-        const FPS = 60;
-        const frameDelay = 1000 / FPS;
-        
-        function initCanvas() {
-            canvas = document.createElement('canvas');
-            ctx = canvas.getContext('2d', { alpha: false });
-            canvas.style.position = 'fixed';
-            canvas.style.top = '0';
-            canvas.style.left = '0';
-            canvas.style.pointerEvents = 'none';
-            canvas.style.zIndex = '1';
-            document.body.appendChild(canvas);
-            resizeCanvas();
-        }
+        const fireworks = [];
 
-        const debounce = (func, wait) => {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
+        // Cache DOM elements
+        const elements = {
+            notifPanel: document.getElementById('notifPanel'),
+            messagesList: document.getElementById('messagesList'),
+            notifCount: document.getElementById('notifCount'),
+            visitCount: document.getElementById('visitCount'),
+            nameInput: document.getElementById('nameInput'),
+            messageInput: document.getElementById('messageInput'),
+            countdown: document.getElementById('countdown')
         };
 
-        const resizeCanvas = debounce(() => {
-            const dpr = window.devicePixelRatio || 1;
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            canvas.width = width * dpr;
-            canvas.height = height * dpr;
-            canvas.style.width = `${width}px`;
-            canvas.style.height = `${height}px`;
-            ctx.scale(dpr, dpr);
-        }, 250);
-
-        function clearAll() {
-            if (confirm('Are you sure you want to clear all messages and visit count?')) {
-                localStorage.setItem('visitsCount', '0');
-                localStorage.setItem('messages', '[]');
-                document.getElementById('visitCount').textContent = '0';
-                document.getElementById('messagesList').innerHTML = '';
-                document.getElementById('notifCount').textContent = '0';
-            }
-        }
+        // Debounce function
+        const debounce = (fn, delay) => {
+            let timeoutId;
+            return (...args) => {
+                if (timeoutId) clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => fn.apply(null, args), delay);
+            };
+        };
 
         class Particle {
             constructor(x, y, color) {
@@ -400,11 +334,13 @@
             }
 
             draw() {
+                ctx.save();
                 ctx.globalAlpha = this.alpha;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
                 ctx.fill();
+                ctx.restore();
             }
         }
 
@@ -418,8 +354,7 @@
             }
 
             createParticles() {
-                const isMobile = window.innerWidth < 768;
-                const particleCount = isMobile ? 30 : 100;
+                const particleCount = Math.min(100, window.innerWidth < 480 ? 50 : 100);
                 const color = this.colors[Math.floor(Math.random() * this.colors.length)];
                 for (let i = 0; i < particleCount; i++) {
                     this.particles.push(new Particle(this.x, this.y, color));
@@ -427,50 +362,56 @@
             }
 
             update() {
-                for (let i = this.particles.length - 1; i >= 0; i--) {
-                    if (this.particles[i].life <= 0) {
-                        this.particles.splice(i, 1);
+                this.particles.forEach((particle, index) => {
+                    if (particle.life <= 0) {
+                        this.particles.splice(index, 1);
                     } else {
-                        this.particles[i].update();
+                        particle.update();
                     }
-                }
+                });
             }
 
             draw() {
-                for (const particle of this.particles) {
-                    particle.draw();
-                }
+                this.particles.forEach(particle => particle.draw());
             }
         }
 
-        const fireworks = [];
+        function initCanvas() {
+            canvas = document.createElement('canvas');
+            ctx = canvas.getContext('2d');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '1';
+            document.body.appendChild(canvas);
+            resizeCanvas();
+        }
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            canvas.style.width = `${window.innerWidth}px`;
+            canvas.style.height = `${window.innerHeight}px`;
+            ctx.scale(dpr, dpr);
+        }
 
         function createFirework(x, y) {
-            if (fireworks.length < 5) {
-                fireworks.push(new Firework(x, y));
-            }
+            fireworks.push(new Firework(x, y));
         }
 
-        function animate(currentTime) {
-            if (!lastTime) lastTime = currentTime;
-            const elapsed = currentTime - lastTime;
-
-            if (elapsed > frameDelay) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                for (let i = fireworks.length - 1; i >= 0; i--) {
-                    if (fireworks[i].particles.length <= 0) {
-                        fireworks.splice(i, 1);
-                    } else {
-                        fireworks[i].update();
-                        fireworks[i].draw();
-                    }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            fireworks.forEach((firework, index) => {
+                if (firework.particles.length <= 0) {
+                    fireworks.splice(index, 1);
+                } else {
+                    firework.update();
+                    firework.draw();
                 }
-                
-                lastTime = currentTime;
-            }
-            
-            animationFrameId = requestAnimationFrame(animate);
+            });
+            requestAnimationFrame(animate);
         }
 
         function authenticate() {
@@ -478,7 +419,7 @@
             if (password === ADMIN_PASSWORD) {
                 isAdmin = true;
                 document.querySelector('.admin-panel').classList.add('admin-authenticated');
-                document.getElementById('notifPanel').style.display = 'block';
+                elements.notifPanel.style.display = 'block';
                 loadMessages();
             }
         }
@@ -488,29 +429,35 @@
                 authenticate();
                 return;
             }
-            const panel = document.getElementById('notifPanel');
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            elements.notifPanel.style.display = elements.notifPanel.style.display === 'none' ? 'block' : 'none';
         }
 
         function loadMessages() {
             const messages = JSON.parse(localStorage.getItem('messages') || '[]');
-            const messagesList = document.getElementById('messagesList');
-            messagesList.innerHTML = messages.map(msg => `
+            elements.messagesList.innerHTML = messages.map(msg => `
                 <div class="message-item">
                     <strong>${msg.date}</strong><br>
                     <strong>From: ${msg.name}</strong><br>
                     ${msg.text}
                 </div>
             `).join('');
-            document.getElementById('notifCount').textContent = messages.length;
-            document.getElementById('visitCount').textContent = localStorage.getItem('visitsCount') || 0;
+            elements.notifCount.textContent = messages.length;
+            elements.visitCount.textContent = localStorage.getItem('visitsCount') || 0;
+        }
+
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all messages and visit count?')) {
+                localStorage.setItem('visitsCount', '0');
+                localStorage.setItem('messages', '[]');
+                elements.visitCount.textContent = '0';
+                elements.messagesList.innerHTML = '';
+                elements.notifCount.textContent = '0';
+            }
         }
 
         function sendMessage() {
-            const nameInput = document.getElementById('nameInput');
-            const messageInput = document.getElementById('messageInput');
-            const name = nameInput.value.trim();
-            const message = messageInput.value.trim();
+            const name = elements.nameInput.value.trim();
+            const message = elements.messageInput.value.trim();
             
             if (!name) {
                 alert('Please enter your name before sending!');
@@ -528,8 +475,8 @@
                 text: message
             });
             localStorage.setItem('messages', JSON.stringify(messages));
-            nameInput.value = '';
-            messageInput.value = '';
+            elements.nameInput.value = '';
+            elements.messageInput.value = '';
             
             if (isAdmin) loadMessages();
             alert('Message sent successfully!');
@@ -543,8 +490,7 @@
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById('countdown').innerHTML = 
-                `${days}d ${hours}h ${minutes}m ${seconds}s until 2025`;
+            elements.countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s until 2025`;
         }
 
         window.addEventListener('load', () => {
@@ -553,35 +499,24 @@
             localStorage.setItem('visitsCount', visits);
             
             initCanvas();
-            window.addEventListener('resize', resizeCanvas, { passive: true });
+            window.addEventListener('resize', debounce(resizeCanvas, 250));
             
-            requestAnimationFrame(animate);
+            animate();
             setInterval(updateCountdown, 1000);
             updateCountdown();
             
             setInterval(() => {
-                if (document.visibilityState === 'visible') {
-                    createFirework(
-                        Math.random() * canvas.width,
-                        Math.random() * canvas.height * 0.5
-                    );
-                }
-            }, 2000);
+                createFirework(
+                    Math.random() * canvas.width,
+                    Math.random() * canvas.height * 0.5
+                );
+            }, FIREWORK_INTERVAL);
         });
 
-        document.addEventListener('touchstart', (e) => {
+        canvas.addEventListener('touchstart', (e) => {
             const touch = e.touches[0];
             createFirework(touch.clientX, touch.clientY);
         }, { passive: true });
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                cancelAnimationFrame(animationFrameId);
-                lastTime = 0;
-            } else {
-                requestAnimationFrame(animate);
-            }
-        });
     </script>
 </body>
 </html>
