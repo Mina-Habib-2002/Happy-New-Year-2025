@@ -179,24 +179,6 @@
             opacity: 1;
         }
 
-        .publish-btn {
-            margin-top: var(--spacing-unit);
-            background: var(--secondary-color);
-            color: var(--text-color);
-            border: none;
-            padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 1.5);
-            border-radius: 20px;
-            cursor: pointer;
-            width: 100%;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            transition: all 0.3s ease;
-        }
-
-        .publish-btn:hover {
-            background: #45a049;
-            transform: scale(1.02);
-        }
-
         .message-item {
             border-bottom: 1px solid #333;
             padding: var(--spacing-unit) 0;
@@ -248,7 +230,6 @@
             <div style="margin-top: 15px;">
                 <strong>Total Visits:</strong> <span id="visitCount">0</span>
             </div>
-            <button class="publish-btn" onclick="publishWebsite()">Publish Website</button>
         </div>
     </div>
 
@@ -269,7 +250,7 @@
 
     <script>
         let canvas, ctx;
-        const ADMIN_PASSWORD = 'mina2002';
+        const ADMIN_PASSWORD = 'MinaPrivates';
         let isAdmin = false;
         
         function initCanvas() {
@@ -430,24 +411,6 @@
             
             if (isAdmin) loadMessages();
             alert('Message sent successfully!');
-        }
-
-        function publishWebsite() {
-            const steps = `
-            To publish your website for free (unlimited time):
-            
-            1. Create a free GitHub account at github.com
-            2. Create a new repository named: username.github.io
-            3. Upload this HTML file as index.html
-            4. Your website will be live at: https://username.github.io
-            
-            Your website will be permanently online and completely free!
-            
-            Would you like to start now?`;
-            
-            if (confirm(steps)) {
-                window.open('https://github.com/join', '_blank');
-            }
         }
 
         function updateCountdown() {
