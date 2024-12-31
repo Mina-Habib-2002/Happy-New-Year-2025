@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mina Habib Wishes You a Happy New Year 2025!</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("jLknHegPXnj7vhh3N");
+        })();
+    </script>
     <style>
         :root {
             --primary-color: #ff4081;
@@ -130,6 +136,11 @@
             touch-action: manipulation;
         }
 
+        .send-button:hover {
+            transform: scale(1.05);
+            background: #45a049;
+        }
+
         @media (max-width: 768px) {
             .content {
                 padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
@@ -152,22 +163,41 @@
         <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--accent-color); font-weight: bold;">From: Mina Habib</p>
         
         <div class="message-area">
-            <form action="https://formsubmit.co/Mina.maged2002f@gmail.com" method="POST">
-    <!-- Add this line for secure connection -->
-    <input type="hidden" name="_captcha" value="false">
-    
-    <h3 class="message-title">Type Your Name Here</h3>
-    <textarea name="name" class="name-input" placeholder="Enter your name..." required></textarea>
-    
-    <h3 class="message-title">Leave A Message To Mina</h3>
-    <textarea name="message" class="message-input" placeholder="Type your message here..." required></textarea>
-    <button type="submit" class="send-button">Send Message</button>
-</form>
-
+            <h3 class="message-title">Type Your Name Here</h3>
+            <textarea id="nameInput" class="name-input" placeholder="Enter your name..." required></textarea>
+            
+            <h3 class="message-title">Leave A Message To Mina</h3>
+            <textarea id="messageInput" class="message-input" placeholder="Type your message here..." required></textarea>
+            <button onclick="sendEmail()" class="send-button">Send Message</button>
         </div>
     </div>
 
     <script>
+        function sendEmail() {
+            const nameInput = document.getElementById('nameInput');
+            const messageInput = document.getElementById('messageInput');
+
+            if (!nameInput.value.trim() || !messageInput.value.trim()) {
+                alert("Please fill in both name and message fields!");
+                return;
+            }
+
+            emailjs.send("service_b6xbnup", "template_43527hg", {
+                from_name: nameInput.value,
+                message: messageInput.value,
+                to_email: "Mina.maged2002f@gmail.com"
+            }).then(
+                function(response) {
+                    alert("Message sent successfully!");
+                    nameInput.value = '';
+                    messageInput.value = '';
+                },
+                function(error) {
+                    alert("Message failed to send. Please try again.");
+                }
+            );
+        }
+
         const elements = {
             countdown: document.getElementById('countdown')
         };
