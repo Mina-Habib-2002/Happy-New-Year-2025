@@ -153,17 +153,17 @@
         
         <div class="message-area">
             <form action="https://formsubmit.co/Mina.maged2002f@gmail.com" method="POST">
-                <h3 class="message-title">Type Your Name Here</h3>
-                <textarea name="name" class="name-input" placeholder="Enter your name..." required></textarea>
-                
-                <h3 class="message-title">Leave A Message To Mina</h3>
-                <textarea name="message" class="message-input" placeholder="Type your message here..." required></textarea>
-                <button type="submit" class="send-button">Send Message</button>
-                
-                <!-- Redirect after submission -->
-                <input type="hidden" name="_next" value="https://your-website-url.com">
-                <input type="hidden" name="_subject" value="New Year Message from Your Website">
-            </form>
+    <!-- Add this line for secure connection -->
+    <input type="hidden" name="_captcha" value="false">
+    
+    <h3 class="message-title">Type Your Name Here</h3>
+    <textarea name="name" class="name-input" placeholder="Enter your name..." required></textarea>
+    
+    <h3 class="message-title">Leave A Message To Mina</h3>
+    <textarea name="message" class="message-input" placeholder="Type your message here..." required></textarea>
+    <button type="submit" class="send-button">Send Message</button>
+</form>
+
         </div>
     </div>
 
