@@ -94,6 +94,22 @@
             font-size: clamp(1.2rem, 3vw, 1.5rem);
         }
 
+        .name-input {
+            width: min(90vw, 500px);
+            height: clamp(50px, 8vh, 70px);
+            border-radius: 25px;
+            padding: calc(var(--spacing-unit) * 1.5);
+            background-color: rgba(255, 0, 0, 0.2);
+            color: var(--text-color);
+            border: 2px solid red;
+            resize: none;
+            margin-bottom: var(--spacing-unit);
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            appearance: none;
+            -webkit-appearance: none;
+            overflow: auto;
+        }
+
         .message-input {
             width: min(90vw, 500px);
             height: clamp(100px, 15vh, 150px);
@@ -185,32 +201,32 @@
             word-wrap: break-word;
         }
 
+        .clear-btn {
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .clear-btn:hover {
+            background: #d81b60;
+            transform: scale(1.02);
+        }
+
         .material-icons {
             font-size: 24px;
         }
-        
-        .clear-btn {
-    background: #ff4081;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 15px;
-    cursor: pointer;
-    margin-left: 10px;
-    font-size: 12px;
-    transition: all 0.3s ease;
-}
-
-.clear-btn:hover {
-    background: #d81b60;
-    transform: scale(1.05);
-}
 
         @media (max-width: 768px) {
             .content {
                 padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
             }
-
             .notification-panel {
                 max-width: 90vw;
                 right: -10px;
@@ -221,7 +237,6 @@
             h1 {
                 font-size: clamp(1.8rem, 7vw, 2.5rem);
             }
-
             .countdown {
                 font-size: clamp(1.2rem, 5vw, 1.5rem);
             }
@@ -241,20 +256,13 @@
             <span class="material-icons">notifications</span>
             <span class="notification-count" id="notifCount">0</span>
         </div>
-        
         <div class="notification-panel" id="notifPanel">
-    <h3>Admin Panel</h3>
-    <div id="messagesList"></div>
-    <div style="margin-top: 15px;">
-        <strong>Total Visits:</strong> <span id="visitCount">0</span>
-        <button onclick="clearAll()" class="clear-btn">Clear All Data</button>
-    </div>
-</div>
-            
-<div style="margin-top: 15px;">
-    <strong>Total Visits:</strong> <span id="visitCount">0</span>
-    <button onclick="clearVisits()" class="clear-btn">Clear Visits</button>
-</div>
+            <h3>Admin Panel</h3>
+            <div id="messagesList"></div>
+            <div style="margin-top: 15px;">
+                <strong>Total Visits:</strong> <span id="visitCount">0</span>
+            </div>
+            <button onclick="clearAll()" class="clear-btn">Clear All Data</button>
         </div>
     </div>
 
@@ -267,6 +275,9 @@
         <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--accent-color); font-weight: bold;">From: Mina Habib</p>
         
         <div class="message-area">
+            <h3 class="message-title">Type Your Name Here</h3>
+            <textarea id="nameInput" class="name-input" placeholder="Enter your name..."></textarea>
+            
             <h3 class="message-title">Leave A Message To Mina</h3>
             <textarea id="messageInput" class="message-input" placeholder="Type your message here..."></textarea>
             <button onclick="sendMessage()" class="send-button">Send Message</button>
@@ -299,16 +310,15 @@
             ctx.scale(dpr, dpr);
         }
 
-   function clearAll() {
-    if (confirm('Are you sure you want to clear all data?')) {
-        localStorage.setItem('visitsCount', '0');
-        localStorage.setItem('messages', '[]');
-        document.getElementById('visitCount').textContent = '0';
-        document.getElementById('messagesList').innerHTML = '';
-        document.getElementById('notifCount').textContent = '0';
-    }
-}
-
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all messages and visit count?')) {
+                localStorage.setItem('visitsCount', '0');
+                localStorage.setItem('messages', '[]');
+                document.getElementById('visitCount').textContent = '0';
+                document.getElementById('messagesList').innerHTML = '';
+                document.getElementById('notifCount').textContent = '0';
+            }
+        }
 
         class Particle {
             constructor(x, y, color) {
@@ -422,6 +432,7 @@
             messagesList.innerHTML = messages.map(msg => `
                 <div class="message-item">
                     <strong>${msg.date}</strong><br>
+                    <strong>From: ${msg.name}</strong><br>
                     ${msg.text}
                 </div>
             `).join('');
@@ -430,8 +441,15 @@
         }
 
         function sendMessage() {
+            const nameInput = document.getElementById('nameInput');
             const messageInput = document.getElementById('messageInput');
+            const name = nameInput.value.trim();
             const message = messageInput.value.trim();
+            
+            if (!name) {
+                alert('Please enter your name before sending!');
+                return;
+            }
             if (!message) {
                 alert('Please enter a message before sending!');
                 return;
@@ -440,9 +458,11 @@
             const messages = JSON.parse(localStorage.getItem('messages') || '[]');
             messages.push({
                 date: new Date().toLocaleString(),
+                name: name,
                 text: message
             });
             localStorage.setItem('messages', JSON.stringify(messages));
+            nameInput.value = '';
             messageInput.value = '';
             
             if (isAdmin) loadMessages();
@@ -461,7 +481,6 @@
                 `${days}d ${hours}h ${minutes}m ${seconds}s until 2025`;
         }
 
-        // Initialize everything
         window.addEventListener('load', () => {
             let visits = parseInt(localStorage.getItem('visitsCount') || '0');
             visits++;
@@ -470,12 +489,10 @@
             initCanvas();
             window.addEventListener('resize', resizeCanvas);
             
-            // Start animations and updates
             animate();
             setInterval(updateCountdown, 1000);
             updateCountdown();
             
-            // Create automatic fireworks
             setInterval(() => {
                 createFirework(
                     Math.random() * canvas.width,
@@ -484,7 +501,6 @@
             }, 1000);
         });
 
-        // Handle mobile touch events
         canvas.addEventListener('touchstart', (e) => {
             const touch = e.touches[0];
             createFirework(touch.clientX, touch.clientY);
