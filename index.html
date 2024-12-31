@@ -19,6 +19,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         html, body {
@@ -26,6 +32,15 @@
             overflow-x: hidden;
             font-family: Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            background-color: #000;
+        }
+
+        /* Hardware acceleration */
+        body * {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000;
+            will-change: transform;
         }
         
         .background {
@@ -37,6 +52,7 @@
             background: url('https://media.giphy.com/media/pVGsAWjzvXcZW4ZBTE/giphy.gif') center center;
             background-size: cover;
             z-index: -2;
+            transform: translate3d(0,0,0);
         }
         
         .content {
@@ -51,6 +67,7 @@
             color: var(--text-color);
             background: var(--dark-overlay);
             padding: var(--spacing-unit);
+            transform: translate3d(0,0,0);
         }
 
         h1 {
@@ -94,9 +111,8 @@
             font-size: clamp(1.2rem, 3vw, 1.5rem);
         }
 
-        .name-input {
+        .name-input, .message-input {
             width: min(90vw, 500px);
-            height: clamp(50px, 8vh, 70px);
             border-radius: 25px;
             padding: calc(var(--spacing-unit) * 1.5);
             background-color: rgba(255, 0, 0, 0.2);
@@ -108,22 +124,31 @@
             appearance: none;
             -webkit-appearance: none;
             overflow: auto;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Hide scrollbar for name input */
+        .name-input::-webkit-scrollbar,
+        .message-input::-webkit-scrollbar {
+            display: none;
+        }
+
+        .name-input, .message-input {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .name-input {
+            height: clamp(50px, 8vh, 70px);
         }
 
         .message-input {
-            width: min(90vw, 500px);
             height: clamp(100px, 15vh, 150px);
-            border-radius: 25px;
-            padding: calc(var(--spacing-unit) * 1.5);
-            background-color: rgba(255, 0, 0, 0.2);
-            color: var(--text-color);
-            border: 2px solid red;
-            resize: none;
-            margin-bottom: var(--spacing-unit);
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            appearance: none;
-            -webkit-appearance: none;
-            overflow: auto;
+        }
+
+        .name-input:focus, .message-input:focus {
+            border-color: var(--accent-color);
+            outline: none;
         }
 
         .send-button {
@@ -134,8 +159,13 @@
             border-radius: 20px;
             cursor: pointer;
             font-size: clamp(1rem, 2vw, 1.1rem);
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease, background-color 0.3s ease;
             touch-action: manipulation;
+            user-select: none;
+        }
+
+        .send-button:active {
+            transform: scale(0.98);
         }
 
         .admin-panel {
@@ -156,6 +186,11 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .notification-icon:active {
+            transform: scale(0.95);
         }
 
         .notification-count {
@@ -223,6 +258,7 @@
             font-size: 24px;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .content {
                 padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
@@ -276,7 +312,7 @@
         
         <div class="message-area">
             <h3 class="message-title">Type Your Name Here</h3>
-            <textarea id="nameInput" class="name-input" placeholder="Enter your name..."></textarea>
+            <textarea id="nameInput" class="name-input" placeholder="Enter your name..." rows="1"></textarea>
             
             <h3 class="message-title">Leave A Message To Mina</h3>
             <textarea id="messageInput" class="message-input" placeholder="Type your message here..."></textarea>
@@ -288,10 +324,14 @@
         let canvas, ctx;
         const ADMIN_PASSWORD = 'MinaPrivates';
         let isAdmin = false;
+        let animationFrameId;
+        let lastTime = 0;
+        const FPS = 60;
+        const frameDelay = 1000 / FPS;
         
         function initCanvas() {
             canvas = document.createElement('canvas');
-            ctx = canvas.getContext('2d');
+            ctx = canvas.getContext('2d', { alpha: false });
             canvas.style.position = 'fixed';
             canvas.style.top = '0';
             canvas.style.left = '0';
@@ -301,14 +341,28 @@
             resizeCanvas();
         }
 
-        function resizeCanvas() {
+        const debounce = (func, wait) => {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        };
+
+        const resizeCanvas = debounce(() => {
             const dpr = window.devicePixelRatio || 1;
-            canvas.width = window.innerWidth * dpr;
-            canvas.height = window.innerHeight * dpr;
-            canvas.style.width = `${window.innerWidth}px`;
-            canvas.style.height = `${window.innerHeight}px`;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
             ctx.scale(dpr, dpr);
-        }
+        }, 250);
 
         function clearAll() {
             if (confirm('Are you sure you want to clear all messages and visit count?')) {
@@ -346,13 +400,11 @@
             }
 
             draw() {
-                ctx.save();
                 ctx.globalAlpha = this.alpha;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
                 ctx.fill();
-                ctx.restore();
             }
         }
 
@@ -366,7 +418,8 @@
             }
 
             createParticles() {
-                const particleCount = Math.min(100, window.innerWidth < 480 ? 50 : 100);
+                const isMobile = window.innerWidth < 768;
+                const particleCount = isMobile ? 30 : 100;
                 const color = this.colors[Math.floor(Math.random() * this.colors.length)];
                 for (let i = 0; i < particleCount; i++) {
                     this.particles.push(new Particle(this.x, this.y, color));
@@ -374,37 +427,50 @@
             }
 
             update() {
-                this.particles.forEach((particle, index) => {
-                    if (particle.life <= 0) {
-                        this.particles.splice(index, 1);
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    if (this.particles[i].life <= 0) {
+                        this.particles.splice(i, 1);
                     } else {
-                        particle.update();
+                        this.particles[i].update();
                     }
-                });
+                }
             }
 
             draw() {
-                this.particles.forEach(particle => particle.draw());
+                for (const particle of this.particles) {
+                    particle.draw();
+                }
             }
         }
 
         const fireworks = [];
 
         function createFirework(x, y) {
-            fireworks.push(new Firework(x, y));
+            if (fireworks.length < 5) {
+                fireworks.push(new Firework(x, y));
+            }
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            fireworks.forEach((firework, index) => {
-                if (firework.particles.length <= 0) {
-                    fireworks.splice(index, 1);
-                } else {
-                    firework.update();
-                    firework.draw();
+        function animate(currentTime) {
+            if (!lastTime) lastTime = currentTime;
+            const elapsed = currentTime - lastTime;
+
+            if (elapsed > frameDelay) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = fireworks.length - 1; i >= 0; i--) {
+                    if (fireworks[i].particles.length <= 0) {
+                        fireworks.splice(i, 1);
+                    } else {
+                        fireworks[i].update();
+                        fireworks[i].draw();
+                    }
                 }
-            });
-            requestAnimationFrame(animate);
+                
+                lastTime = currentTime;
+            }
+            
+            animationFrameId = requestAnimationFrame(animate);
         }
 
         function authenticate() {
@@ -487,24 +553,35 @@
             localStorage.setItem('visitsCount', visits);
             
             initCanvas();
-            window.addEventListener('resize', resizeCanvas);
+            window.addEventListener('resize', resizeCanvas, { passive: true });
             
-            animate();
+            requestAnimationFrame(animate);
             setInterval(updateCountdown, 1000);
             updateCountdown();
             
             setInterval(() => {
-                createFirework(
-                    Math.random() * canvas.width,
-                    Math.random() * canvas.height * 0.5
-                );
-            }, 1000);
+                if (document.visibilityState === 'visible') {
+                    createFirework(
+                        Math.random() * canvas.width,
+                        Math.random() * canvas.height * 0.5
+                    );
+                }
+            }, 2000);
         });
 
-        canvas.addEventListener('touchstart', (e) => {
+        document.addEventListener('touchstart', (e) => {
             const touch = e.touches[0];
             createFirework(touch.clientX, touch.clientY);
         }, { passive: true });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                cancelAnimationFrame(animationFrameId);
+                lastTime = 0;
+            } else {
+                requestAnimationFrame(animate);
+            }
+        });
     </script>
 </body>
 </html>
