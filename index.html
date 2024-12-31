@@ -15,9 +15,7 @@
             --spacing-unit: clamp(0.5rem, 2vw, 1.5rem);
         }
 
-        ::-webkit-scrollbar {
-            display: none;
-        }
+        ::-webkit-scrollbar { display: none; }
 
         * {
             margin: 0;
@@ -44,6 +42,7 @@
             background-size: cover;
             z-index: -2;
         }
+
         .content {
             position: relative;
             z-index: 1;
@@ -75,12 +74,8 @@
         }
 
         @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffeb3b;
-            }
-            to {
-                text-shadow: 0 0 20px #fff, 0 0 30px var(--primary-color), 0 0 40px var(--primary-color);
-            }
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffeb3b; }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--primary-color), 0 0 40px var(--primary-color); }
         }
 
         .countdown {
@@ -114,7 +109,8 @@
             -webkit-appearance: none;
             overflow: auto;
         }
-                .name-input {
+
+        .name-input {
             height: clamp(50px, 8vh, 70px);
         }
 
@@ -134,90 +130,19 @@
             touch-action: manipulation;
         }
 
-        .admin-panel {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: block !important;
+        @media (max-width: 768px) {
+            .content {
+                padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
+            }
         }
 
-        .notification-icon {
-            background: #ff4081;
-            color: white;
-            padding: 15px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .notification-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ff0000;
-            color: var(--text-color);
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: clamp(10px, 1.5vw, 12px);
-        }
-
-        .notification-panel {
-            display: none;
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: rgba(0, 0, 0, 0.9);
-            border-radius: 10px;
-            padding: calc(var(--spacing-unit) * 1.5);
-            width: min(90vw, 300px);
-            max-height: 70vh;
-            overflow-y: auto;
-            color: var(--text-color);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-
-        .message-item {
-            border-bottom: 1px solid #333;
-            padding: var(--spacing-unit) 0;
-            word-wrap: break-word;
-        }
-
-        .clear-btn {
-            background: #ff4081;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 15px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            width: 100%;
+        @media (max-width: 480px) {
+            h1 { font-size: clamp(1.8rem, 7vw, 2.5rem); }
+            .countdown { font-size: clamp(1.2rem, 5vw, 1.5rem); }
         }
     </style>
 </head>
 <body>
-    <div class="admin-panel">
-        <div class="notification-icon" onclick="toggleNotifications()">
-            <span class="material-icons">notifications</span>
-            <span class="notification-count" id="notifCount">0</span>
-        </div>
-        <div class="notification-panel" id="notifPanel">
-            <h3>Admin Panel</h3>
-            <div id="messagesList"></div>
-            <div style="margin-top: 15px;">
-                <strong>Total Visits:</strong> <span id="visitCount">0</span>
-            </div>
-            <button onclick="clearAll()" class="clear-btn">Clear All Data</button>
-        </div>
-    </div>
-
     <div class="background"></div>
     <div class="content">
         <h1>Mina Habib Wishes You</h1>
@@ -227,97 +152,25 @@
         <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--accent-color); font-weight: bold;">From: Mina Habib</p>
         
         <div class="message-area">
-            <h3 class="message-title">Type Your Name Here</h3>
-            <textarea id="nameInput" class="name-input" placeholder="Enter your name..."></textarea>
-            
-            <h3 class="message-title">Leave A Message To Mina</h3>
-            <textarea id="messageInput" class="message-input" placeholder="Type your message here..."></textarea>
-            <button onclick="sendMessage()" class="send-button">Send Message</button>
+            <form action="https://formsubmit.co/Mina.maged2002f@gmail.com" method="POST">
+                <h3 class="message-title">Type Your Name Here</h3>
+                <textarea name="name" class="name-input" placeholder="Enter your name..." required></textarea>
+                
+                <h3 class="message-title">Leave A Message To Mina</h3>
+                <textarea name="message" class="message-input" placeholder="Type your message here..." required></textarea>
+                <button type="submit" class="send-button">Send Message</button>
+                
+                <!-- Redirect after submission -->
+                <input type="hidden" name="_next" value="https://your-website-url.com">
+                <input type="hidden" name="_subject" value="New Year Message from Your Website">
+            </form>
         </div>
     </div>
 
     <script>
-        const ADMIN_PASSWORD = 'MinaPrivates';
-        let isAdmin = false;
-        
         const elements = {
-            notifPanel: document.getElementById('notifPanel'),
-            messagesList: document.getElementById('messagesList'),
-            notifCount: document.getElementById('notifCount'),
-            visitCount: document.getElementById('visitCount'),
-            nameInput: document.getElementById('nameInput'),
-            messageInput: document.getElementById('messageInput'),
             countdown: document.getElementById('countdown')
         };
-
-        function authenticate() {
-            const password = prompt('Enter admin password:');
-            if (password === ADMIN_PASSWORD) {
-                isAdmin = true;
-                document.querySelector('.admin-panel').classList.add('admin-authenticated');
-                elements.notifPanel.style.display = 'block';
-                loadMessages();
-            }
-        }
-
-        function toggleNotifications() {
-            if (!isAdmin) {
-                authenticate();
-                return;
-            }
-            elements.notifPanel.style.display = elements.notifPanel.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function loadMessages() {
-            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
-            elements.messagesList.innerHTML = messages.map(msg => `
-                <div class="message-item">
-                    <strong>${msg.date}</strong><br>
-                    <strong>From: ${msg.name}</strong><br>
-                    ${msg.text}
-                </div>
-            `).join('');
-            elements.notifCount.textContent = messages.length;
-            elements.visitCount.textContent = localStorage.getItem('visitsCount') || 0;
-        }
-
-        function clearAll() {
-            if (confirm('Are you sure you want to clear all messages and visit count?')) {
-                localStorage.setItem('visitsCount', '0');
-                localStorage.setItem('messages', '[]');
-                elements.visitCount.textContent = '0';
-                elements.messagesList.innerHTML = '';
-                elements.notifCount.textContent = '0';
-            }
-        }
-
-        function sendMessage() {
-            const name = elements.nameInput.value.trim();
-            const message = elements.messageInput.value.trim();
-            
-            if (!name) {
-                alert('Please enter your name before sending!');
-                return;
-            }
-            if (!message) {
-                alert('Please enter a message before sending!');
-                return;
-            }
-            
-            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
-            messages.push({
-                date: new Date().toLocaleString(),
-                name: name,
-                text: message
-            });
-            localStorage.setItem('messages', JSON.stringify(messages));
-            
-            elements.nameInput.value = '';
-            elements.messageInput.value = '';
-            
-            if (isAdmin) loadMessages();
-            alert('Message sent successfully!');
-        }
 
         function updateCountdown() {
             const now = new Date();
@@ -333,10 +186,6 @@
         }
 
         window.addEventListener('load', () => {
-            let visits = parseInt(localStorage.getItem('visitsCount') || '0');
-            visits++;
-            localStorage.setItem('visitsCount', visits);
-            
             setInterval(updateCountdown, 1000);
             updateCountdown();
         });
