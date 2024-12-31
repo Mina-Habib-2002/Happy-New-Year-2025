@@ -188,6 +188,23 @@
         .material-icons {
             font-size: 24px;
         }
+        
+        .clear-btn {
+    background: #ff4081;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+    background: #d81b60;
+    transform: scale(1.05);
+}
 
         @media (max-width: 768px) {
             .content {
@@ -230,6 +247,10 @@
             <div style="margin-top: 15px;">
                 <strong>Total Visits:</strong> <span id="visitCount">0</span>
             </div>
+<div style="margin-top: 15px;">
+    <strong>Total Visits:</strong> <span id="visitCount">0</span>
+    <button onclick="clearVisits()" class="clear-btn">Clear Visits</button>
+</div>
         </div>
     </div>
 
@@ -273,6 +294,12 @@
             canvas.style.height = `${window.innerHeight}px`;
             ctx.scale(dpr, dpr);
         }
+
+        function clearVisits() {
+    localStorage.setItem('visitsCount', '0');
+    document.getElementById('visitCount').textContent = '0';
+}
+
 
         class Particle {
             constructor(x, y, color) {
