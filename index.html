@@ -179,31 +179,36 @@
     const messageInput = document.getElementById('messageInput');
     const sendButton = document.querySelector('.send-button');
 
-    const templateParams = {
-        from_name: nameInput.value,
-        message: messageInput.value,
-        to_name: 'Mina',
-        user_email: 'Mina.maged2002f@gmail.com'
-    };
-
     sendButton.textContent = 'Sending...';
     sendButton.disabled = true;
 
-    emailjs.send('service_b6xbnup', 'template_43527hg', templateParams)
+    // Using the latest EmailJS API format
+    const serviceID = 'service_b6xbnup';
+    const templateID = 'template_43527hg';
+    const publicKey = 'jLknHegPXnj7vhh3N';
+
+    const templateParams = {
+        to_name: 'Mina',
+        from_name: nameInput.value,
+        message: messageInput.value,
+    };
+
+    emailjs.send(serviceID, templateID, templateParams, publicKey)
         .then(() => {
             alert('Message sent successfully!');
             nameInput.value = '';
             messageInput.value = '';
         })
-        .catch((error) => {
-            console.log('FAILED...', error);
+        .catch((err) => {
+            console.log('Error:', err);
             alert('Message failed to send');
         })
         .finally(() => {
             sendButton.textContent = 'Send Message';
             sendButton.disabled = false;
         });
-        }
+}
+
         const elements = {
             countdown: document.getElementById('countdown')
         };
