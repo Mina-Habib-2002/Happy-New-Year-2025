@@ -241,12 +241,16 @@
             <span class="material-icons">notifications</span>
             <span class="notification-count" id="notifCount">0</span>
         </div>
+        
         <div class="notification-panel" id="notifPanel">
-            <h3>Admin Panel</h3>
-            <div id="messagesList"></div>
-            <div style="margin-top: 15px;">
-                <strong>Total Visits:</strong> <span id="visitCount">0</span>
-            </div>
+    <h3>Admin Panel</h3>
+    <div id="messagesList"></div>
+    <div style="margin-top: 15px;">
+        <strong>Total Visits:</strong> <span id="visitCount">0</span>
+        <button onclick="clearAll()" class="clear-btn">Clear All Data</button>
+    </div>
+</div>
+            
 <div style="margin-top: 15px;">
     <strong>Total Visits:</strong> <span id="visitCount">0</span>
     <button onclick="clearVisits()" class="clear-btn">Clear Visits</button>
@@ -295,9 +299,14 @@
             ctx.scale(dpr, dpr);
         }
 
-        function clearVisits() {
-    localStorage.setItem('visitsCount', '0');
-    document.getElementById('visitCount').textContent = '0';
+   function clearAll() {
+    if (confirm('Are you sure you want to clear all data?')) {
+        localStorage.setItem('visitsCount', '0');
+        localStorage.setItem('messages', '[]');
+        document.getElementById('visitCount').textContent = '0';
+        document.getElementById('messagesList').innerHTML = '';
+        document.getElementById('notifCount').textContent = '0';
+    }
 }
 
 
