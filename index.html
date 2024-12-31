@@ -6,11 +6,12 @@
     <title>Mina Habib Wishes You a Happy New Year 2025!</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function(){
-            emailjs.init("jLknHegPXnj7vhh3N");
-        })();
-    </script>
+<script type="text/javascript">
+    (function() {
+        // Initialize with your public key
+        emailjs.init("jLknHegPXnj7vhh3N");
+    })();
+</script>
     <style>
         :root {
             --primary-color: #ff4081;
@@ -182,21 +183,28 @@
         return;
     }
 
-    emailjs.send("service_b6xbnup", "template_43527hg", {
-        to_name: "Mina",
+    // Show loading state
+    const sendButton = document.querySelector('.send-button');
+    sendButton.textContent = 'Sending...';
+    sendButton.disabled = true;
+
+    const templateParams = {
         from_name: nameInput.value,
+        to_name: 'Mina Habib',
         message: messageInput.value,
-        reply_to: "Mina.maged2002f@gmail.com"
-    }).then(
-        function(response) {
-            alert("Message sent successfully!");
+    };
+
+    emailjs.send('service_b6xbnup', 'template_43527hg', templateParams)
+        .then(function() {
+            alert('Message sent successfully!');
             nameInput.value = '';
             messageInput.value = '';
-        },
-        function(error) {
-            alert("Message failed to send. Please try again.");
-        }
-    );       }
+        })
+        .finally(function() {
+            sendButton.textContent = 'Send Message';
+            sendButton.disabled = false;
+        });
+}
         const elements = {
             countdown: document.getElementById('countdown')
         };
