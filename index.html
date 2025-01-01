@@ -20,9 +20,7 @@
             --christmas-red: #D42426;
             --christmas-green: #165B33;
             --christmas-gold: #FFD700;
-            --snow-color: #fff;
         }
-
         * {
             margin: 0;
             padding: 0;
@@ -36,6 +34,7 @@
             -webkit-tap-highlight-color: transparent;
             background: #000;
         }
+
         .background {
             position: fixed;
             top: 0;
@@ -48,62 +47,26 @@
             opacity: 0.6;
         }
 
-        .snowfall {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .snowflake {
+        .firework-particle {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--snow-color);
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
-            opacity: 0.8;
-            animation: snowfall linear infinite;
-        }
-
-        .christmas-designs {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
             pointer-events: none;
+            animation: explode 1s ease-out forwards;
+            box-shadow: 0 0 6px 1px currentColor;
         }
 
-        .christmas-item {
-            position: absolute;
-            font-size: 30px;
-            animation: float 15s linear infinite;
-            opacity: 0.7;
-        }
-        @keyframes snowfall {
+        @keyframes explode {
             0% {
-                transform: translateY(-100px) rotate(0deg);
+                transform: translateY(0) scale(1);
+                opacity: 1;
             }
             100% {
-                transform: translateY(100vh) rotate(360deg);
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
+                transform: translateY(var(--final-y)) translateX(var(--final-x)) scale(0);
                 opacity: 0;
             }
         }
-
         .stars {
             position: fixed;
             top: 0;
@@ -121,6 +84,7 @@
             background-repeat: repeat;
             animation: twinkle 4s infinite;
         }
+
         @keyframes twinkle {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -140,7 +104,6 @@
             padding: var(--spacing-unit);
             padding-top: 120px;
         }
-
         h1 {
             font-size: clamp(2rem, 5vw, 4rem);
             margin-bottom: var(--spacing-unit);
@@ -158,6 +121,7 @@
             from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--christmas-red); }
             to { text-shadow: 0 0 20px #fff, 0 0 30px var(--christmas-green), 0 0 40px var(--christmas-gold); }
         }
+
         .countdown {
             font-size: clamp(1.5rem, 4vw, 2rem);
             margin: calc(var(--spacing-unit) * 1.5) 0;
@@ -167,7 +131,6 @@
             border-radius: 25px;
             border: 2px solid var(--christmas-gold);
         }
-
         .message-area {
             width: min(90vw, 500px);
             margin-top: calc(var(--spacing-unit) * 0.7);
@@ -194,6 +157,7 @@
             font-size: clamp(1rem, 2vw, 1.2rem);
             margin-bottom: var(--spacing-unit);
         }
+
         .message-input {
             width: 100%;
             border-radius: 25px;
@@ -206,7 +170,6 @@
             font-size: clamp(1rem, 2vw, 1.2rem);
             height: clamp(100px, 15vh, 150px);
         }
-
         .send-button {
             padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 2);
             background: var(--secondary-color);
@@ -229,6 +192,7 @@
             font-size: 1.2rem;
             margin-top: 10px;
         }
+
         #messageForm.submitted .success-message {
             display: block;
         }
@@ -240,7 +204,6 @@
             border-radius: 20px;
             background: rgba(0,0,0,0.3);
         }
-
         .popup {
             display: none;
             position: fixed;
@@ -262,6 +225,7 @@
             color: white;
             font-size: 1.2rem;
         }
+
         .popup-content h2 {
             margin-bottom: 25px;
         }
@@ -282,7 +246,6 @@
 </head>
 <body>
     <div class="background"></div>
-    <div class="snowfall"></div>
     <div class="christmas-designs"></div>
     <div class="stars"></div>
     
@@ -296,6 +259,7 @@
             </div>
         </div>
     </div>
+
     <div class="content">
         <h1>Mina Habib Wishes You</h1>
         <h1>🎄 A Happy New Year 2025! 🎄</h1>
@@ -305,7 +269,6 @@
         <div class="sender-info">
             <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--christmas-gold); font-weight: bold;">From: Mina Habib</p>
         </div>
-        
         <div class="message-area">
             <form id="messageForm" 
                   action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" 
@@ -323,30 +286,37 @@
         </div>
     </div>
     <script>
-        function createSnowflake() {
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
-            snowflake.style.left = Math.random() * 100 + 'vw';
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.querySelector('.snowfall').appendChild(snowflake);
+        function createFirework() {
+            const colors = ['#ff0000', '#ffd700', '#ff00ff', '#00ff00', '#ffffff', '#ff8800'];
+            const startX = Math.random() * window.innerWidth;
+            const startY = window.innerHeight;
+            const endY = Math.random() * (window.innerHeight * 0.5);
             
-            setTimeout(() => snowflake.remove(), 5000);
+            // Create explosion
+            setTimeout(() => {
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'firework-particle';
+                    particle.style.left = startX + 'px';
+                    particle.style.top = endY + 'px';
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    const angle = (Math.PI * 2 * i) / 50;
+                    const velocity = 2 + Math.random() * 2;
+                    const finalX = Math.cos(angle) * 100 * velocity;
+                    const finalY = Math.sin(angle) * 100 * velocity;
+                    
+                    particle.style.setProperty('--final-x', finalX + 'px');
+                    particle.style.setProperty('--final-y', finalY + 'px');
+                    
+                    document.querySelector('.christmas-designs').appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 1000);
+                }
+            }, Math.random() * 1000);
         }
 
-        function createChristmasItem() {
-            const items = ['🎄', '🎅', '🎁', '⭐', '🔔', '❄️'];
-            const item = document.createElement('div');
-            item.className = 'christmas-item';
-            item.textContent = items[Math.floor(Math.random() * items.length)];
-            item.style.left = Math.random() * 100 + 'vw';
-            item.style.animationDuration = Math.random() * 10 + 15 + 's';
-            document.querySelector('.christmas-designs').appendChild(item);
-            
-            setTimeout(() => item.remove(), 25000);
-        }
-
-        setInterval(createSnowflake, 100);
-        setInterval(createChristmasItem, 2000);
+        setInterval(createFirework, 800);
 
         function showPopup() {
             setTimeout(() => {
