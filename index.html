@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mina Habib Wishes You a Happy New Year 2025!</title>
+    <title>Mina New Year Greeting</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script>
         let submitted = false;
@@ -48,7 +48,8 @@
             opacity: 0.6;
         }
 
-        .snowfall {
+        /* Animation Containers */
+        .snowfall, .fireworks, .stars, .rain {
             position: fixed;
             top: 0;
             left: 0;
@@ -58,80 +59,67 @@
             pointer-events: none;
         }
 
+        /* Animation Elements */
         .snowflake {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: var(--snow-color);
             border-radius: 50%;
             opacity: 0.8;
             animation: snowfall linear infinite;
         }
 
-        @keyframes snowfall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-            }
-        }
-
-        .fireworks {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
         .firework {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             animation: explode 1s ease-out forwards;
             box-shadow: 0 0 10px 2px currentColor;
         }
 
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0));
-            background-repeat: repeat;
-            animation: twinkle 4s infinite;
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 1s infinite;
+        }
+
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(transparent, rgba(255,255,255,0.8));
+            animation: rain 1s linear infinite;
+        }
+        /* Animations */
+        @keyframes snowfall {
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
         }
 
         @keyframes explode {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(20);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(40);
-                opacity: 0;
-            }
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(20); opacity: 0.8; }
+            100% { transform: scale(40); opacity: 0; }
         }
 
         @keyframes twinkle {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes rain {
+            0% { transform: translateY(-100px); }
+            100% { transform: translateY(100vh); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--christmas-red); }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--christmas-green), 0 0 40px var(--christmas-gold); }
         }
 
         .content {
@@ -162,11 +150,6 @@
             background: rgba(212, 36, 38, 0.2);
         }
 
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--christmas-red); }
-            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--christmas-green), 0 0 40px var(--christmas-gold); }
-        }
-
         .countdown {
             font-size: clamp(1.5rem, 4vw, 2rem);
             margin: calc(var(--spacing-unit) * 1.5) 0;
@@ -176,10 +159,9 @@
             border-radius: 25px;
             border: 2px solid var(--christmas-gold);
         }
-
         .message-area {
             width: min(90vw, 500px);
-            margin-top: calc(var(--spacing-unit) * 2);
+            margin-top: calc(var(--spacing-unit) * 1);
             background: rgba(212, 36, 38, 0.1);
             padding: 20px;
             border-radius: 15px;
@@ -202,7 +184,7 @@
             border: 2px solid red;
             font-size: clamp(1rem, 2vw, 1.2rem);
             margin-bottom: var(--spacing-unit);
-         }
+        }
 
         .message-input {
             width: 100%;
@@ -215,7 +197,7 @@
             margin-bottom: var(--spacing-unit);
             font-size: clamp(1rem, 2vw, 1.2rem);
             height: clamp(100px, 15vh, 150px);
-         }
+        }
 
         .send-button {
             padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 2);
@@ -232,7 +214,6 @@
             transform: scale(1.05);
             background: #45a049;
         }
-
         .success-message {
             display: none;
             color: #4CAF50;
@@ -297,6 +278,7 @@
     <div class="snowfall"></div>
     <div class="fireworks"></div>
     <div class="stars"></div>
+    <div class="rain"></div>
     
     <div class="popup" id="successPopup">
         <span class="popup-close" onclick="closePopup()">×</span>
@@ -318,7 +300,6 @@
         <div class="sender-info">
             <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--christmas-gold); font-weight: bold;">From: Mina Habib</p>
         </div>
-        
         <div class="message-area">
             <form id="messageForm" 
                   action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" 
@@ -335,32 +316,34 @@
             <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
     </div>
-
     <script>
-        function createFirework() {
-            const colors = ['#ff0000', '#ffd700', '#00ff00', '#0000ff', '#ff00ff', '#ffffff'];
-            const firework = document.createElement('div');
-            firework.className = 'firework';
-            firework.style.left = Math.random() * window.innerWidth + 'px';
-            firework.style.top = Math.random() * window.innerHeight + 'px';
-            firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            document.querySelector('.fireworks').appendChild(firework);
+        // Optimized animation creation
+        const createAnimationElement = (className, container, duration = 5000) => {
+            const element = document.createElement('div');
+            element.className = className;
             
-            setTimeout(() => firework.remove(), 1000);
-        }
-
-        function createSnowflake() {
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
-            snowflake.style.left = Math.random() * 100 + 'vw';
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.querySelector('.snowfall').appendChild(snowflake);
+            if (className === 'firework') {
+                const colors = ['#ff0000', '#ffd700', '#00ff00', '#0000ff', '#ff00ff', '#ffffff'];
+                element.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            }
             
-            setTimeout(() => snowflake.remove(), 5000);
-        }
+            element.style.left = Math.random() * 100 + 'vw';
+            element.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            
+            document.querySelector(container).appendChild(element);
+            setTimeout(() => element.remove(), duration);
+        };
 
-        setInterval(createFirework, 100);
-        setInterval(createSnowflake, 100);
+        // Create elements with optimized intervals
+        const createElements = () => {
+            if (Math.random() < 0.3) createAnimationElement('firework', '.fireworks', 1000);
+            if (Math.random() < 0.5) createAnimationElement('snowflake', '.snowfall');
+            if (Math.random() < 0.3) createAnimationElement('star', '.stars', 2000);
+            if (Math.random() < 0.7) createAnimationElement('raindrop', '.rain', 1000);
+        };
+
+        // Optimized interval for all animations
+        setInterval(createElements, 100);
 
         function showPopup() {
             setTimeout(() => {
