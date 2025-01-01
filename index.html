@@ -5,13 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mina Habib Wishes You a Happy New Year 2025!</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script type="text/javascript">
-    (function() {
-        // Initialize with your public key
-        emailjs.init("jLknHegPXnj7vhh3N");
-    })();
-</script>
+    <script>
+        let submitted = false;
+    </script>
     <style>
         :root {
             --primary-color: #ff4081;
@@ -20,16 +16,16 @@
             --text-color: #ffffff;
             --dark-overlay: rgba(0, 0, 0, 0.3);
             --spacing-unit: clamp(0.5rem, 2vw, 1.5rem);
+            --christmas-red: #D42426;
+            --christmas-green: #165B33;
+            --christmas-gold: #FFD700;
+            --snow-color: #fff;
         }
-
-        ::-webkit-scrollbar { display: none; }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
 
         html, body {
@@ -37,6 +33,7 @@
             overflow-x: hidden;
             font-family: Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            background: #000;
         }
 
         .background {
@@ -47,12 +44,99 @@
             height: 100%;
             background: url('https://media.giphy.com/media/pVGsAWjzvXcZW4ZBTE/giphy.gif') center center;
             background-size: cover;
-            z-index: -2;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .snowfall {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .snowflake {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--snow-color);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+            box-shadow: 0 0 10px 2px currentColor;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            animation: twinkle 4s infinite;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(20);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(40);
+                opacity: 0;
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .content {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -60,9 +144,9 @@
             align-items: center;
             text-align: center;
             color: var(--text-color);
-            background: var(--dark-overlay);
+            background: rgba(0, 0, 0, 0.5);
             padding: var(--spacing-unit);
-            padding-top: 200px;
+            padding-top: 120px;
         }
 
         h1 {
@@ -72,38 +156,56 @@
             animation: glow 2s ease-in-out infinite alternate;
             word-wrap: break-word;
             max-width: 100%;
-        }
-
-        h2 {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            margin-bottom: calc(var(--spacing-unit) * 2);
-            padding: 0 var(--spacing-unit);
+            border: 3px solid var(--christmas-gold);
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(212, 36, 38, 0.2);
         }
 
         @keyframes glow {
-            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffeb3b; }
-            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--primary-color), 0 0 40px var(--primary-color); }
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--christmas-red); }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--christmas-green), 0 0 40px var(--christmas-gold); }
         }
 
         .countdown {
             font-size: clamp(1.5rem, 4vw, 2rem);
             margin: calc(var(--spacing-unit) * 1.5) 0;
-            color: var(--accent-color);
+            color: var(--christmas-gold);
+            background: rgba(22, 91, 51, 0.3);
+            padding: 15px 30px;
+            border-radius: 25px;
+            border: 2px solid var(--christmas-gold);
         }
 
         .message-area {
             width: min(90vw, 500px);
             margin-top: calc(var(--spacing-unit) * 2);
+            background: rgba(212, 36, 38, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--christmas-gold);
         }
 
         .message-title {
-            color: #00ff00;
+            color: var(--christmas-gold);
             margin-bottom: var(--spacing-unit);
             font-size: clamp(1.2rem, 3vw, 1.5rem);
         }
 
-        .name-input, .message-input {
-            width: min(90vw, 500px);
+        .name-input {
+            width: 100%;
+            height: 45px;
+            border-radius: 25px;
+            padding: 0 calc(var(--spacing-unit) * 1.5);
+            background-color: rgba(255, 0, 0, 0.2);
+            color: var(--text-color);
+            border: 2px solid red;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-bottom: var(--spacing-unit);
+         }
+
+        .message-input {
+            width: 100%;
             border-radius: 25px;
             padding: calc(var(--spacing-unit) * 1.5);
             background-color: rgba(255, 0, 0, 0.2);
@@ -112,18 +214,8 @@
             resize: none;
             margin-bottom: var(--spacing-unit);
             font-size: clamp(1rem, 2vw, 1.2rem);
-            appearance: none;
-            -webkit-appearance: none;
-            overflow: auto;
-        }
-
-        .name-input {
-            height: clamp(50px, 8vh, 70px);
-        }
-
-        .message-input {
             height: clamp(100px, 15vh, 150px);
-        }
+         }
 
         .send-button {
             padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 2);
@@ -134,7 +226,6 @@
             cursor: pointer;
             font-size: clamp(1rem, 2vw, 1.1rem);
             transition: all 0.3s ease;
-            touch-action: manipulation;
         }
 
         .send-button:hover {
@@ -142,71 +233,148 @@
             background: #45a049;
         }
 
-        @media (max-width: 768px) {
-            .content {
-                padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
-            }
+        .success-message {
+            display: none;
+            color: #4CAF50;
+            font-size: 1.2rem;
+            margin-top: 10px;
         }
 
-        @media (max-width: 480px) {
-            h1 { font-size: clamp(1.8rem, 7vw, 2.5rem); }
-            .countdown { font-size: clamp(1.2rem, 5vw, 1.5rem); }
+        #messageForm.submitted .success-message {
+            display: block;
+        }
+
+        .sender-info {
+            margin: 40px;
+            padding: 15px;
+            border: 2px solid var(--christmas-gold);
+            border-radius: 20px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background: linear-gradient(135deg, var(--christmas-red), var(--christmas-green));
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            z-index: 1000;
+            text-align: center;
+            border: 3px solid var(--christmas-gold);
+        }
+
+        .popup-content {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .popup-content h2 {
+            margin-bottom: 25px;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
 <body>
     <div class="background"></div>
+    <div class="snowfall"></div>
+    <div class="fireworks"></div>
+    <div class="stars"></div>
+    
+    <div class="popup" id="successPopup">
+        <span class="popup-close" onclick="closePopup()">×</span>
+        <div class="popup-content">
+            <h2>🎄 Message Sent! 🎄</h2>
+            <p>Your wishes have been delivered to Mina!</p>
+            <div style="margin-top: 20px;">
+                🎅 Ho Ho Ho! 🎁
+            </div>
+        </div>
+    </div>
+
     <div class="content">
         <h1>Mina Habib Wishes You</h1>
-        <h1>🎉 A Happy New Year 2025! 🎉</h1>
+        <h1>🎄 A Happy New Year 2025! 🎄</h1>
         <div class="countdown" id="countdown"></div>
         <h2>May your 2025 be filled with endless joy, remarkable success, and boundless happiness!</h2>
-        <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--accent-color); font-weight: bold;">From: Mina Habib</p>
+        
+        <div class="sender-info">
+            <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--christmas-gold); font-weight: bold;">From: Mina Habib</p>
+        </div>
         
         <div class="message-area">
-    <h3 class="message-title">Type Your Name Here</h3>
-    <textarea name="from_name" id="nameInput" class="name-input" placeholder="Enter your name..." required></textarea>
-    
-    <h3 class="message-title">Leave A Message To Mina</h3>
-    <textarea name="message" id="messageInput" class="message-input" placeholder="Type your message here..." required></textarea>
-    <button onclick="sendEmail()" class="send-button">Send Message</button>
-</div>
-
+            <form id="messageForm" 
+                  action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" 
+                  method="post" 
+                  target="hidden_iframe" 
+                  onsubmit="showPopup(); return true;">
+                <h3 class="message-title">🎄 Type Your Name Here 🎄</h3>
+                <input type="text" name="entry.1390583614" id="nameInput" class="name-input" placeholder="Enter your name..." required>
+                
+                <h3 class="message-title">🎅 Leave A Message To Mina 🎅</h3>
+                <textarea name="entry.51159881" id="messageInput" class="message-input" placeholder="Type your message here..." required></textarea>
+                <button type="submit" class="send-button">🎄 Send The Message To Mina 🎄</button>
+            </form>
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+        </div>
     </div>
 
     <script>
-        function sendEmail() {
-    const nameInput = document.getElementById('nameInput');
-    const messageInput = document.getElementById('messageInput');
-    const sendButton = document.querySelector('.send-button');
+        function createFirework() {
+            const colors = ['#ff0000', '#ffd700', '#00ff00', '#0000ff', '#ff00ff', '#ffffff'];
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * window.innerWidth + 'px';
+            firework.style.top = Math.random() * window.innerHeight + 'px';
+            firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            document.querySelector('.fireworks').appendChild(firework);
+            
+            setTimeout(() => firework.remove(), 1000);
+        }
 
-    sendButton.textContent = 'Sending...';
-    sendButton.disabled = true;
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.querySelector('.snowfall').appendChild(snowflake);
+            
+            setTimeout(() => snowflake.remove(), 5000);
+        }
 
-    emailjs.sendForm('service_b6xbnup', 'template_43527hg', document.querySelector('.message-area'), 'jLknHegPXnj7vhh3N')
-        .then(() => {
-            alert('Message sent successfully!');
-            nameInput.value = '';
-            messageInput.value = '';
-        })
-        .catch((err) => {
-            console.log('Error:', err);
-            alert('Message failed to send');
-        })
-        .finally(() => {
-            sendButton.textContent = 'Send Message';
-            sendButton.disabled = false;
-        });
-}
+        setInterval(createFirework, 100);
+        setInterval(createSnowflake, 100);
 
+        function showPopup() {
+            setTimeout(() => {
+                document.getElementById('successPopup').style.display = 'block';
+            }, 1000);
+        }
 
-        const elements = {
-            countdown: document.getElementById('countdown')
-        };
+        function closePopup() {
+            document.getElementById('successPopup').style.display = 'none';
+        }
 
         function updateCountdown() {
             const now = new Date();
-            const newYear = new Date(2025, 0, 1);
+            const newYear = new Date(2026, 0, 1);
             const diff = newYear - now;
             
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -214,8 +382,24 @@
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             
-            elements.countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s until 2025`;
+            document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s until 2026`;
         }
+
+        window.addEventListener('load', function() {
+            const form = document.getElementById('messageForm');
+            const iframe = document.getElementById('hidden_iframe');
+
+            iframe.addEventListener('load', function() {
+                if(submitted) {
+                    form.reset();
+                    form.classList.add('submitted');
+                    setTimeout(() => {
+                        form.classList.remove('submitted');
+                    }, 3000);
+                    submitted = false;
+                }
+            });
+        });
 
         window.addEventListener('load', () => {
             setInterval(updateCountdown, 1000);
