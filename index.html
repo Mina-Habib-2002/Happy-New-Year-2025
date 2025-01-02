@@ -217,62 +217,99 @@
         <div class="popup-content">
             <h2>🎄 Message Sent! 🎄</h2>
             <p>Your wishes have been delivered to Mina!</p>
-            <div style="margin-top: 20px;">🎅 Ho Ho Ho! 🎁</div>
+            <div style="margin-top: 20px;">
+                <button class="send-button" onclick="closePopup()">Okay!</button>
+            </div>
         </div>
     </div>
 
-    <!-- Content -->
+    <!-- Content Section -->
     <div class="content">
-        <h1>Mina Habib Wishes You a Happy New Year 2025!</h1>
+        <h1>Mina Maged Wishes You a Happy New Year 2025!</h1>
         <div class="countdown" id="countdown"></div>
 
         <div class="message-area">
-            <div class="message-title">Leave Your Message:</div>
-            <input type="text" class="name-input" id="name" placeholder="Your Name" required>
-            <textarea class="message-input" id="message" placeholder="Your Message" required></textarea>
+            <h3 class="message-title">Leave Your New Year's Message:</h3>
+            <input type="text" id="name" class="name-input" placeholder="Your Name" required>
+            <textarea id="message" class="message-input" placeholder="Your Message" required></textarea>
             <button class="send-button" onclick="sendMessage()">Send Message</button>
+        </div>
+
+        <div class="sender-info">
+            <p>Website Developed by Mina Maged</p>
         </div>
     </div>
 
     <script>
-        let lastCountdown = '';
+        // Countdown Timer
+        const countdownElement = document.getElementById("countdown");
+        const targetDate = new Date("January 1, 2025 00:00:00").getTime();
+        const countdownInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        const updateCountdown = () => {
-            const now = new Date();
-            const newYear = new Date(2026, 0, 1);
-            const diff = newYear - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            const countdown = `${days}d ${hours}h ${minutes}m ${seconds}s until 2026`;
+            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-            if (countdown !== lastCountdown) {
-                document.getElementById('countdown').innerHTML = countdown;
-                lastCountdown = countdown;
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownElement.innerHTML = "Happy New Year!";
+            }
+        }, 1000);
+
+        // Snowflake Animation Logic
+        let snowflakes = [];
+        const maxSnowflakes = 20; // Reduced number of snowflakes for better performance
+
+        const createSnowflakes = () => {
+            while (snowflakes.length < maxSnowflakes) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                document.querySelector('.snowfall').appendChild(snowflake);
+                snowflakes.push(snowflake);
             }
         };
 
-        setInterval(updateCountdown, 1000);
+        const animateSnowflakes = () => {
+            snowflakes.forEach(snowflake => {
+                const snowflakeRect = snowflake.getBoundingClientRect();
+                if (snowflakeRect.top > window.innerHeight) {
+                    snowflake.style.top = '-4px';
+                    snowflake.style.left = `${Math.random() * 100}vw`;
+                }
+            });
+            requestAnimationFrame(animateSnowflakes);
+        };
 
-        const sendMessage = () => {
-            const name = document.getElementById('name').value.trim();
-            const message = document.getElementById('message').value.trim();
+        createSnowflakes();
+        requestAnimationFrame(animateSnowflakes);
 
+        // Send Message Function
+        function sendMessage() {
+            const name = document.getElementById("name").value;
+            const message = document.getElementById("message").value;
             if (name && message) {
-                // Simulate sending message (could integrate with backend)
-                document.getElementById('successPopup').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('successPopup').style.display = 'none';
-                }, 3000);
-            } else {
-                alert('Please fill out both fields!');
+                showPopup();
             }
-        };
+        }
 
-        const closePopup = () => {
-            document.getElementById('successPopup').style.display = 'none';
-        };
+        // Show Popup
+        function showPopup() {
+            const popup = document.getElementById("successPopup");
+            popup.style.display = "block";
+        }
+
+        // Close Popup
+        function closePopup() {
+            const popup = document.getElementById("successPopup");
+            popup.style.display = "none";
+        }
     </script>
 </body>
 </html>
