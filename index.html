@@ -26,7 +26,7 @@
             background: #000;
         }
 
-        .background, .snowfall, .christmas-designs, .stars {
+        .background {
             position: fixed;
             top: 0;
             left: 0;
@@ -43,32 +43,6 @@
             background: url('https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg') center center/cover;
             opacity: 0.6;
             z-index: 0;
-        }
-
-        .snowflake, .christmas-item {
-            position: fixed;
-            will-change: transform, opacity;
-            transform: translateZ(0);
-        }
-
-        .snowflake {
-            width: 4px;
-            height: 4px;
-            background: var(--snow-color);
-            border-radius: 50%;
-            opacity: 0.6;
-        }
-
-        .christmas-item {
-            font-size: clamp(16px, 2vw, 24px);
-            opacity: 0.5;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translate(calc(var(--moveX) * 1vw), calc(var(--moveY) * 1vh)); opacity: 0; }
         }
 
         .content {
@@ -201,9 +175,6 @@
 </head>
 <body>
     <div class="background"></div>
-    <div class="snowfall"></div>
-    <div class="christmas-designs"></div>
-    <div class="stars"></div>
 
     <!-- Background Music -->
     <audio id="backgroundMusic" loop>
@@ -268,101 +239,6 @@
         window.addEventListener('mousedown', playMusicOnInteraction, { once: true });
         window.addEventListener('scroll', playMusicOnInteraction, { once: true });
 
-        // Animation System
-        const animationSystem = {
-            maxSnowflakes: 50, // Reduced for performance
-            maxChristmasItems: 20, // Reduced for performance
-            
-            init() {
-                this.createSnowflakes();
-                this.createChristmasItems();
-            },
-            
-            createSnowflakes() {
-                const snowfall = document.querySelector('.snowfall');
-                for (let i = 0; i < this.maxSnowflakes; i++) {
-                    const snowflake = document.createElement('div');
-                    snowflake.className = 'snowflake';
-                    snowfall.appendChild(snowflake);
-                    this.animateSnowflake(snowflake);
-                }
-            },
-            
-            animateSnowflake(snowflake) {
-                const { startX, startY, moveX, moveY } = this.getRandomPosition();
-                snowflake.style.left = startX;
-                snowflake.style.top = startY;
-                snowflake.style.setProperty('--moveX', moveX);
-                snowflake.style.setProperty('--moveY', moveY);
-                snowflake.style.animation = `float ${Math.random() * 8 + 12}s linear infinite`;
-
-                // Restart animation when it ends
-                snowflake.addEventListener('animationend', () => {
-                    this.animateSnowflake(snowflake);
-                });
-            },
-            
-            createChristmasItems() {
-                const christmasDesigns = document.querySelector('.christmas-designs');
-                const items = ['🎄', '🎅', '🎁', '⭐', '🔔', '❄️'];
-                for (let i = 0; i < this.maxChristmasItems; i++) {
-                    const item = document.createElement('div');
-                    item.className = 'christmas-item';
-                    item.textContent = items[Math.floor(Math.random() * items.length)];
-                    christmasDesigns.appendChild(item);
-                    this.animateChristmasItem(item);
-                }
-            },
-            
-            animateChristmasItem(item) {
-                const { startX, startY, moveX, moveY } = this.getRandomPosition();
-                item.style.left = startX;
-                item.style.top = startY;
-                item.style.setProperty('--moveX', moveX);
-                item.style.setProperty('--moveY', moveY);
-                item.style.animation = `float ${Math.random() * 15 + 20}s linear infinite`;
-
-                // Restart animation when it ends
-                item.addEventListener('animationend', () => {
-                    this.animateChristmasItem(item);
-                });
-            },
-            
-            getRandomPosition() {
-                const origin = Math.random();
-                let startX, startY, moveX, moveY;
-                
-                if (origin < 0.2) {
-                    startX = '50vw';
-                    startY = '50vh';
-                    moveX = (Math.random() - 0.5) * 100;
-                    moveY = (Math.random() - 0.5) * 100;
-                } else if (origin < 0.4) {
-                    startX = Math.random() * 100 + 'vw';
-                    startY = '-5vh';
-                    moveX = (Math.random() - 0.5) * 50;
-                    moveY = Math.random() * 100;
-                } else if (origin < 0.6) {
-                    startX = Math.random() * 100 + 'vw';
-                    startY = '105vh';
-                    moveX = (Math.random() - 0.5) * 50;
-                    moveY = -Math.random() * 100;
-                } else if (origin < 0.8) {
-                    startX = '-5vw';
-                    startY = Math.random() * 100 + 'vh';
-                    moveX = Math.random() * 100;
-                    moveY = (Math.random() - 0.5) * 50;
-                } else {
-                    startX = '105vw';
-                    startY = Math.random() * 100 + 'vh';
-                    moveX = -Math.random() * 100;
-                    moveY = (Math.random() - 0.5) * 50;
-                }
-                
-                return { startX, startY, moveX, moveY };
-            }
-        };
-
         const showPopup = () => {
             setTimeout(() => document.getElementById('successPopup').style.display = 'block', 1000);
         };
@@ -383,7 +259,6 @@
         };
 
         document.addEventListener('DOMContentLoaded', () => {
-            animationSystem.init();
             setInterval(updateCountdown, 1000);
             updateCountdown();
         });
