@@ -206,7 +206,7 @@
     <div class="stars"></div>
 
     <!-- Background Music -->
-    <audio id="backgroundMusic" loop muted autoplay>
+    <audio id="backgroundMusic" loop>
         <source src="https://raw.githubusercontent.com/Mina-Habib-2002/Happy-New-Year-2025/f8ac3a2cabc742ead6d6751195dbfe75b07fa28d/Background%20Music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -249,16 +249,24 @@
     </div>
 
     <script>
-        // Autoplay Background Music
+        // Background Music
         const backgroundMusic = document.getElementById('backgroundMusic');
 
-        // Unmute and play the music after a short delay
-        setTimeout(() => {
-            backgroundMusic.muted = false;
+        // Play music on user interaction (touch, scroll, click, etc.)
+        const playMusicOnInteraction = () => {
             backgroundMusic.play().catch(() => {
                 console.log("Autoplay blocked by the browser.");
             });
-        }, 1000); // Delay to ensure the page is fully loaded
+            // Remove the event listener after the first interaction
+            window.removeEventListener('touchstart', playMusicOnInteraction);
+            window.removeEventListener('mousedown', playMusicOnInteraction);
+            window.removeEventListener('scroll', playMusicOnInteraction);
+        };
+
+        // Listen for user interaction events
+        window.addEventListener('touchstart', playMusicOnInteraction, { once: true });
+        window.addEventListener('mousedown', playMusicOnInteraction, { once: true });
+        window.addEventListener('scroll', playMusicOnInteraction, { once: true });
 
         // Animation System
         const animationSystem = {
