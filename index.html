@@ -224,11 +224,6 @@
         Your browser does not support the audio element.
     </audio>
 
-    <!-- Firework Sound -->
-    <audio id="fireworkSound" preload="auto">
-        <source src="https://www.soundjay.com/misc/sounds/fireworks-1.mp3" type="audio/mpeg">
-    </audio>
-
     <!-- Popup -->
     <div class="popup" id="successPopup">
         <span class="popup-close" onclick="closePopup()">×</span>
@@ -273,9 +268,7 @@
         // Unmute and play the music after a short delay
         setTimeout(() => {
             backgroundMusic.muted = false;
-            backgroundMusic.play().catch(error => {
-                console.error('Autoplay failed:', error);
-            });
+            backgroundMusic.play().catch(() => {});
         }, 1000); // Delay to ensure the page is fully loaded
 
         // Animation System
