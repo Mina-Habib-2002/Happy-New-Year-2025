@@ -26,7 +26,7 @@
             background: #000;
         }
 
-        .background, .snowfall, .christmas-designs, .stars, .fireworks {
+        .background, .snowfall, .christmas-designs, .stars {
             position: fixed;
             top: 0;
             left: 0;
@@ -45,7 +45,7 @@
             z-index: 0;
         }
 
-        .snowflake, .christmas-item, .firework {
+        .snowflake, .christmas-item {
             position: fixed;
             will-change: transform, opacity;
             transform: translateZ(0);
@@ -64,23 +64,11 @@
             opacity: 0.5;
         }
 
-        .firework {
-            width: 4px;
-            height: 4px;
-            background: #fff;
-            border-radius: 50%;
-        }
-
         @keyframes float {
             0% { transform: translate(0, 0); opacity: 0; }
             10% { opacity: 0.7; }
             90% { opacity: 0.7; }
             100% { transform: translate(calc(var(--moveX) * 1vw), calc(var(--moveY) * 1vh)); opacity: 0; }
-        }
-
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(15); opacity: 0; }
         }
 
         .content {
@@ -216,7 +204,6 @@
     <div class="snowfall"></div>
     <div class="christmas-designs"></div>
     <div class="stars"></div>
-    <div class="fireworks"></div>
 
     <!-- Background Music -->
     <audio id="backgroundMusic" loop muted autoplay>
@@ -275,12 +262,10 @@
         const animationSystem = {
             maxSnowflakes: 15,
             maxChristmasItems: 8,
-            maxFireworks: 3,
             
             init() {
                 this.createSnowflakes();
                 this.createChristmasItems();
-                this.createFireworks();
             },
             
             createSnowflakes() {
@@ -330,28 +315,6 @@
                 // Restart animation when it ends
                 item.addEventListener('animationend', () => {
                     this.animateChristmasItem(item);
-                });
-            },
-            
-            createFireworks() {
-                const fireworksContainer = document.querySelector('.fireworks');
-                for (let i = 0; i < this.maxFireworks; i++) {
-                    const firework = document.createElement('div');
-                    firework.className = 'firework';
-                    fireworksContainer.appendChild(firework);
-                    this.animateFirework(firework);
-                }
-            },
-            
-            animateFirework(firework) {
-                const { startX, startY } = this.getRandomPosition();
-                firework.style.left = startX;
-                firework.style.top = startY;
-                firework.style.animation = 'explode 4s ease-out infinite';
-
-                // Restart animation when it ends
-                firework.addEventListener('animationend', () => {
-                    this.animateFirework(firework);
                 });
             },
             
