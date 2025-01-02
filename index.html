@@ -284,7 +284,7 @@
                 snowflake.style.top = startY;
                 snowflake.style.setProperty('--moveX', moveX);
                 snowflake.style.setProperty('--moveY', moveY);
-                snowflake.style.animation = float ${Math.random() * 8 + 12}s linear infinite;
+                snowflake.style.animation = `float ${Math.random() * 8 + 12}s linear infinite`;
 
                 // Restart animation when it ends
                 snowflake.addEventListener('animationend', () => {
@@ -310,7 +310,7 @@
                 item.style.top = startY;
                 item.style.setProperty('--moveX', moveX);
                 item.style.setProperty('--moveY', moveY);
-                item.style.animation = float ${Math.random() * 30 + 30}s linear infinite;
+                item.style.animation = `float ${Math.random() * 30 + 30}s linear infinite`;
 
                 // Restart animation when it ends
                 item.addEventListener('animationend', () => {
@@ -369,7 +369,7 @@
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById('countdown').innerHTML = ${days}d ${hours}h ${minutes}m ${seconds}s until 2026;
+            document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s until 2026`;
         };
 
         document.addEventListener('DOMContentLoaded', () => {
