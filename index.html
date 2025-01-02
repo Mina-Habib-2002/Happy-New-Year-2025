@@ -30,8 +30,8 @@
             position: absolute; animation: linear infinite; will-change: transform;
         }
 
-        .snowflake { width: 8px; height: 8px; background: var(--snow-color); border-radius: 50%; opacity: 0.8; animation-name: snowfall; }
-        .christmas-item { font-size: 24px; opacity: 0.7; animation-name: float; }
+        .snowflake { width: 6px; height: 6px; background: var(--snow-color); border-radius: 50%; opacity: 0.8; animation-name: snowfall; }
+        .christmas-item { font-size: 20px; opacity: 0.7; animation-name: float; }
 
         @keyframes snowfall { to { transform: translateY(100vh) rotate(360deg); } }
         @keyframes float { to { transform: translateY(-100px) rotate(360deg); opacity: 0; } }
@@ -69,13 +69,13 @@
 
         input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.7); }
 
-        .firework { position: absolute; width: 5px; height: 5px; background: #fff; border-radius: 50%; animation: explode 1.5s ease-out; }
+        .firework { position: absolute; width: 5px; height: 5px; background: #fff; border-radius: 50%; animation: explode 3s ease-out; } /* Slowed down fireworks */
         @keyframes explode {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(20); opacity: 0; }
         }
 
-        .firework-particle { position: absolute; width: 3px; height: 3px; background: #ff0; border-radius: 50%; animation: particle 1s ease-out; }
+        .firework-particle { position: absolute; width: 3px; height: 3px; background: #ff0; border-radius: 50%; animation: particle 2s ease-out; } /* Slowed down particles */
         @keyframes particle {
             0% { transform: translate(0, 0) scale(1); opacity: 1; }
             100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
@@ -137,8 +137,8 @@
         const createSnowflake = () => {
             const snowflake = createElement('div', 'snowflake', document.querySelector('.snowfall'));
             snowflake.style.left = Math.random() * 100 + 'vw';
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-            setTimeout(() => snowflake.remove(), 5000);
+            snowflake.style.animationDuration = Math.random() * 10 + 10 + 's'; // Slowed down snowflakes
+            setTimeout(() => snowflake.remove(), 15000); // Increased removal time
         };
 
         const createChristmasItem = () => {
@@ -146,8 +146,8 @@
             const item = createElement('div', 'christmas-item', document.querySelector('.christmas-designs'));
             item.textContent = items[Math.floor(Math.random() * items.length)];
             item.style.left = Math.random() * 100 + 'vw';
-            item.style.animationDuration = Math.random() * 10 + 15 + 's';
-            setTimeout(() => item.remove(), 25000);
+            item.style.animationDuration = Math.random() * 20 + 25 + 's'; // Slowed down Christmas items
+            setTimeout(() => item.remove(), 40000); // Increased removal time
         };
 
         const createFirework = () => {
@@ -156,17 +156,17 @@
             firework.style.top = Math.random() * 100 + 'vh';
             document.getElementById('fireworkSound').play();
 
-            // Create particles
-            for (let i = 0; i < 50; i++) {
+            // Create very few particles for better performance
+            for (let i = 0; i < 5; i++) { // Reduced to 5 particles
                 const particle = createElement('div', 'firework-particle', firework);
                 const angle = Math.random() * 2 * Math.PI;
                 const distance = Math.random() * 100;
                 particle.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
                 particle.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-                particle.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`;
+                particle.style.animationDuration = `${Math.random() * 1.5 + 1.5}s`; // Slowed down particles
             }
 
-            setTimeout(() => firework.remove(), 1500);
+            setTimeout(() => firework.remove(), 3000); // Increased removal time
         };
 
         // Optimized animation loop
