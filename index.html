@@ -255,13 +255,15 @@
         // Unmute and play the music after a short delay
         setTimeout(() => {
             backgroundMusic.muted = false;
-            backgroundMusic.play().catch(() => {});
+            backgroundMusic.play().catch(() => {
+                console.log("Autoplay blocked by the browser.");
+            });
         }, 1000); // Delay to ensure the page is fully loaded
 
         // Animation System
         const animationSystem = {
-            maxSnowflakes: 15,
-            maxChristmasItems: 8,
+            maxSnowflakes: 50, // Reduced for performance
+            maxChristmasItems: 20, // Reduced for performance
             
             init() {
                 this.createSnowflakes();
