@@ -239,6 +239,37 @@
         window.addEventListener('mousedown', playMusicOnInteraction, { once: true });
         window.addEventListener('scroll', playMusicOnInteraction, { once: true });
 
+        // Optimized Countdown Function
+        const updateCountdown = () => {
+            const now = new Date();
+            const newYear = new Date(2026, 0, 1); // January 1, 2026
+            const diff = newYear - now;
+
+            // Calculate months, weeks, days, hours, and minutes
+            const totalMonths = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+            const remainingAfterMonths = diff % (1000 * 60 * 60 * 24 * 30);
+
+            const totalWeeks = Math.floor(remainingAfterMonths / (1000 * 60 * 60 * 24 * 7));
+            const remainingAfterWeeks = remainingAfterMonths % (1000 * 60 * 60 * 24 * 7);
+
+            const totalDays = Math.floor(remainingAfterWeeks / (1000 * 60 * 60 * 24));
+            const remainingAfterDays = remainingAfterWeeks % (1000 * 60 * 60 * 24);
+
+            const totalHours = Math.floor(remainingAfterDays / (1000 * 60 * 60));
+            const remainingAfterHours = remainingAfterDays % (1000 * 60 * 60);
+
+            const totalMinutes = Math.floor(remainingAfterHours / (1000 * 60));
+
+            // Update the countdown display
+            document.getElementById('countdown').innerHTML = `
+                ${totalMonths} months ${totalWeeks} weeks ${totalDays} days<br>
+                ${totalHours}h ${totalMinutes}m until 2026
+            `;
+
+            // Use requestAnimationFrame for smooth updates
+            requestAnimationFrame(updateCountdown);
+        };
+
         const showPopup = () => {
             setTimeout(() => document.getElementById('successPopup').style.display = 'block', 1000);
         };
@@ -247,20 +278,8 @@
             document.getElementById('successPopup').style.display = 'none';
         };
 
-        const updateCountdown = () => {
-            const now = new Date();
-            const newYear = new Date(2026, 0, 1);
-            const diff = newYear - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s until 2026`;
-        };
-
         document.addEventListener('DOMContentLoaded', () => {
-            setInterval(updateCountdown, 1000);
-            updateCountdown();
+            updateCountdown(); // Start the countdown
         });
     </script>
 </body>
