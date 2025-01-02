@@ -260,8 +260,8 @@
 
         // Animation System
         const animationSystem = {
-            maxSnowflakes: 69,
-            maxChristmasItems: 69,
+            maxSnowflakes: 15,
+            maxChristmasItems: 8,
             
             init() {
                 this.createSnowflakes();
@@ -310,7 +310,7 @@
                 item.style.top = startY;
                 item.style.setProperty('--moveX', moveX);
                 item.style.setProperty('--moveY', moveY);
-                item.style.animation = `float ${Math.random() * 30 + 30}s linear infinite`;
+                item.style.animation = `float ${Math.random() * 15 + 20}s linear infinite`;
 
                 // Restart animation when it ends
                 item.addEventListener('animationend', () => {
