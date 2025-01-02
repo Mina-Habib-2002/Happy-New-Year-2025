@@ -217,14 +217,19 @@
     <div class="christmas-designs"></div>
     <div class="stars"></div>
     <div class="fireworks"></div>
-    <audio id="backgroundMusic" loop preload="auto">
+
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop muted autoplay>
         <source src="https://raw.githubusercontent.com/Mina-Habib-2002/Happy-New-Year-2025/f8ac3a2cabc742ead6d6751195dbfe75b07fa28d/Background%20Music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
 
+    <!-- Firework Sound -->
     <audio id="fireworkSound" preload="auto">
         <source src="https://www.soundjay.com/misc/sounds/fireworks-1.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- Popup -->
     <div class="popup" id="successPopup">
         <span class="popup-close" onclick="closePopup()">×</span>
         <div class="popup-content">
@@ -234,6 +239,7 @@
         </div>
     </div>
 
+    <!-- Content -->
     <div class="content">
         <h1>Mina Habib Wishes You</h1>
         <h1>🎄 A Happy New Year 2025! 🎄</h1>
@@ -259,49 +265,101 @@
             <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
     </div>
+
     <script>
+        // Autoplay Background Music
+        const backgroundMusic = document.getElementById('backgroundMusic');
+
+        // Unmute and play the music after a short delay
+        setTimeout(() => {
+            backgroundMusic.muted = false;
+            backgroundMusic.play().catch(error => {
+                console.error('Autoplay failed:', error);
+            });
+        }, 1000); // Delay to ensure the page is fully loaded
+
+        // Animation System
         const animationSystem = {
-            maxSnowflakes: 10,
-            maxChristmasItems: 5,
-            maxFireworks: 2,
+            maxSnowflakes: 15,
+            maxChristmasItems: 8,
+            maxFireworks: 3,
             
             init() {
-                const music = document.getElementById('backgroundMusic');
-                music.preload = 'auto';
-                music.load();
-                
-                const playMusic = () => {
-                    music.play()
-                    .then(() => document.removeEventListener('click', playMusic))
-                    .catch(() => {});
-                };
-
-                document.addEventListener('click', playMusic);
-                
-                this.lastSnowflake = 0;
-                this.lastChristmasItem = 0;
-                this.lastFirework = 0;
-                
-                this.animate();
+                this.createSnowflakes();
+                this.createChristmasItems();
+                this.createFireworks();
             },
             
-            animate(timestamp) {
-                if (!this.lastSnowflake || timestamp - this.lastSnowflake > 1000) {
-                    this.createSnowflake();
-                    this.lastSnowflake = timestamp;
+            createSnowflakes() {
+                const snowfall = document.querySelector('.snowfall');
+                for (let i = 0; i < this.maxSnowflakes; i++) {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    snowfall.appendChild(snowflake);
+                    this.animateSnowflake(snowflake);
                 }
-                
-                if (!this.lastChristmasItem || timestamp - this.lastChristmasItem > 2000) {
-                    this.createChristmasItem();
-                    this.lastChristmasItem = timestamp;
+            },
+            
+            animateSnowflake(snowflake) {
+                const { startX, startY, moveX, moveY } = this.getRandomPosition();
+                snowflake.style.left = startX;
+                snowflake.style.top = startY;
+                snowflake.style.setProperty('--moveX', moveX);
+                snowflake.style.setProperty('--moveY', moveY);
+                snowflake.style.animation = `float ${Math.random() * 8 + 12}s linear infinite`;
+
+                // Restart animation when it ends
+                snowflake.addEventListener('animationend', () => {
+                    this.animateSnowflake(snowflake);
+                });
+            },
+            
+            createChristmasItems() {
+                const christmasDesigns = document.querySelector('.christmas-designs');
+                const items = ['🎄', '🎅', '🎁', '⭐', '🔔', '❄️'];
+                for (let i = 0; i < this.maxChristmasItems; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'christmas-item';
+                    item.textContent = items[Math.floor(Math.random() * items.length)];
+                    christmasDesigns.appendChild(item);
+                    this.animateChristmasItem(item);
                 }
-                
-                if (!this.lastFirework || timestamp - this.lastFirework > 3000) {
-                    this.createFirework();
-                    this.lastFirework = timestamp;
+            },
+            
+            animateChristmasItem(item) {
+                const { startX, startY, moveX, moveY } = this.getRandomPosition();
+                item.style.left = startX;
+                item.style.top = startY;
+                item.style.setProperty('--moveX', moveX);
+                item.style.setProperty('--moveY', moveY);
+                item.style.animation = `float ${Math.random() * 15 + 20}s linear infinite`;
+
+                // Restart animation when it ends
+                item.addEventListener('animationend', () => {
+                    this.animateChristmasItem(item);
+                });
+            },
+            
+            createFireworks() {
+                const fireworksContainer = document.querySelector('.fireworks');
+                for (let i = 0; i < this.maxFireworks; i++) {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    fireworksContainer.appendChild(firework);
+                    this.animateFirework(firework);
                 }
-                
-                requestAnimationFrame(this.animate.bind(this));
+            },
+            
+            animateFirework(firework) {
+                const { startX, startY } = this.getRandomPosition();
+                firework.style.left = startX;
+                firework.style.top = startY;
+                firework.style.animation = 'explode 4s ease-out infinite';
+
+                // Restart animation when it ends
+                firework.addEventListener('animationend', () => {
+                    this.animateFirework(firework);
+                });
             },
             
             getRandomPosition() {
@@ -336,60 +394,6 @@
                 }
                 
                 return { startX, startY, moveX, moveY };
-            },
-            
-            createSnowflake() {
-                if (document.querySelectorAll('.snowflake').length > this.maxSnowflakes) return;
-                
-                const snowflake = document.createElement('div');
-                snowflake.className = 'snowflake';
-                document.querySelector('.snowfall').appendChild(snowflake);
-                
-                const { startX, startY, moveX, moveY } = this.getRandomPosition();
-                
-                snowflake.style.left = startX;
-                snowflake.style.top = startY;
-                snowflake.style.setProperty('--moveX', moveX);
-                snowflake.style.setProperty('--moveY', moveY);
-                snowflake.style.animation = `float ${Math.random() * 8 + 12}s linear forwards`;
-                
-                setTimeout(() => snowflake.remove(), 20000);
-            },
-            
-            createChristmasItem() {
-                if (document.querySelectorAll('.christmas-item').length > this.maxChristmasItems) return;
-                
-                const items = ['🎄', '🎅', '🎁', '⭐', '🔔', '❄️'];
-                const item = document.createElement('div');
-                item.className = 'christmas-item';
-                item.textContent = items[Math.floor(Math.random() * items.length)];
-                document.querySelector('.christmas-designs').appendChild(item);
-                
-                const { startX, startY, moveX, moveY } = this.getRandomPosition();
-                
-                item.style.left = startX;
-                item.style.top = startY;
-                item.style.setProperty('--moveX', moveX);
-                item.style.setProperty('--moveY', moveY);
-                item.style.animation = `float ${Math.random() * 15 + 20}s linear forwards`;
-                
-                setTimeout(() => item.remove(), 35000);
-            },
-            
-            createFirework() {
-                if (document.querySelectorAll('.firework').length > this.maxFireworks) return;
-                
-                const firework = document.createElement('div');
-                firework.className = 'firework';
-                document.querySelector('.fireworks').appendChild(firework);
-                
-                const { startX, startY } = this.getRandomPosition();
-                
-                firework.style.left = startX;
-                firework.style.top = startY;
-                firework.style.animation = 'explode 4s ease-out forwards';
-                
-                setTimeout(() => firework.remove(), 4000);
             }
         };
 
