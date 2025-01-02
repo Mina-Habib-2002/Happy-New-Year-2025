@@ -5,278 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mina Habib Wishes You a Happy New Year 2025!</title>
     <link rel="icon" type="image/jpg" href="https://i.imghippo.com/files/LYCQ8338Q.jpg">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script>
-        let submitted = false;
-    </script>
     <style>
         :root {
             --primary-color: #ff4081;
             --secondary-color: #4CAF50;
             --accent-color: #ffd700;
             --text-color: #ffffff;
-            --dark-overlay: rgba(0, 0, 0, 0.3);
-            --spacing-unit: clamp(0.5rem, 2vw, 1.5rem);
             --christmas-red: #D42426;
             --christmas-green: #165B33;
             --christmas-gold: #FFD700;
             --snow-color: #fff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow-x: hidden; font-family: Arial, sans-serif; background: #000; }
+
+        .background, .snowfall, .christmas-designs, .stars, .fireworks {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;
         }
 
-        html, body {
-            height: 100%;
-            overflow-x: hidden;
-            font-family: Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            background: #000;
-        }
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg') center center;
-            background-size: cover;
-            z-index: 0;
-            opacity: 0.6;
+        .background { background: url('https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg') center center/cover; opacity: 0.6; z-index: 0; }
+
+        .snowflake, .christmas-item {
+            position: absolute; animation: linear infinite;
         }
 
-        .snowfall {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
+        .snowflake { width: 10px; height: 10px; background: var(--snow-color); border-radius: 50%; opacity: 0.8; animation-name: snowfall; }
+        .christmas-item { font-size: 30px; opacity: 0.7; animation-name: float; }
 
-        .snowflake {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--snow-color);
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: snowfall linear infinite;
-        }
+        @keyframes snowfall { to { transform: translateY(100vh) rotate(360deg); } }
+        @keyframes float { to { transform: translateY(-100px) rotate(360deg); opacity: 0; } }
 
-        .christmas-designs {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .christmas-item {
-            position: absolute;
-            font-size: 30px;
-            animation: float 15s linear infinite;
-            opacity: 0.7;
-        }
-        @keyframes snowfall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0));
-            background-repeat: repeat;
-            animation: twinkle 4s infinite;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
+        .stars { background-image: radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0)); animation: twinkle 4s infinite; }
+        @keyframes twinkle { 50% { opacity: 0.5; } }
 
         .content {
-            position: relative;
-            z-index: 2;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: var(--text-color);
-            background: rgba(0, 0, 0, 0.5);
-            padding: var(--spacing-unit);
-            padding-top: 120px;
+            position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--text-color); background: rgba(0, 0, 0, 0.5); padding: clamp(0.5rem, 2vw, 1.5rem); padding-top: 120px;
         }
 
-        h1 {
-            font-size: clamp(2rem, 5vw, 4rem);
-            margin-bottom: var(--spacing-unit);
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-            word-wrap: break-word;
-            max-width: 100%;
-            border: 3px solid var(--christmas-gold);
-            padding: 15px;
-            border-radius: 10px;
-            background: rgba(212, 36, 38, 0.2);
+        h1 { font-size: clamp(2rem, 5vw, 4rem); margin-bottom: clamp(0.5rem, 2vw, 1.5rem); text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); animation: glow 2s ease-in-out infinite alternate; border: 3px solid var(--christmas-gold); padding: 15px; border-radius: 10px; background: rgba(212, 36, 38, 0.2); }
+        @keyframes glow { to { text-shadow: 0 0 20px #fff, 0 0 30px var(--christmas-green), 0 0 40px var(--christmas-gold); } }
+
+        .countdown { font-size: clamp(1.5rem, 4vw, 2rem); margin: calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5) 0; color: var(--christmas-gold); background: rgba(22, 91, 51, 0.3); padding: 15px 30px; border-radius: 25px; border: 2px solid var(--christmas-gold); }
+
+        .message-area { width: min(90vw, 500px); margin-top: calc(clamp(0.5rem, 2vw, 1.5rem) * 0.7); background: rgba(212, 36, 38, 0.1); padding: 20px; border-radius: 15px; border: 2px solid var(--christmas-gold); }
+
+        .message-title { color: var(--christmas-gold); margin-bottom: clamp(0.5rem, 2vw, 1.5rem); font-size: clamp(1.2rem, 3vw, 1.5rem); }
+
+        .name-input, .message-input { width: 100%; border-radius: 25px; padding: 0 calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5); background-color: rgba(255, 0, 0, 0.2); color: var(--text-color); border: 2px solid red; font-size: clamp(1rem, 2vw, 1.2rem); margin-bottom: clamp(0.5rem, 2vw, 1.5rem); }
+        .message-input { height: clamp(100px, 15vh, 150px); resize: none; padding: calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5); }
+
+        .send-button { padding: calc(clamp(0.5rem, 2vw, 1.5rem) * 0.8) calc(clamp(0.5rem, 2vw, 1.5rem) * 2); background: var(--secondary-color); color: var(--text-color); border: none; border-radius: 20px; cursor: pointer; font-size: clamp(1rem, 2vw, 1.1rem); transition: all 0.3s ease; }
+        .send-button:hover { transform: scale(1.05); background: #45a049; }
+
+        .success-message { display: none; color: #4CAF50; font-size: 1.2rem; margin-top: 10px; }
+        #messageForm.submitted .success-message { display: block; }
+
+        .sender-info { margin: 40px; padding: 15px; border: 2px solid var(--christmas-gold); border-radius: 20px; background: rgba(0,0,0,0.3); }
+
+        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: linear-gradient(135deg, var(--christmas-red), var(--christmas-green)); padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); z-index: 1000; text-align: center; border: 3px solid var(--christmas-gold); }
+        .popup-close { position: absolute; top: 10px; right: 10px; color: white; cursor: pointer; font-size: 24px; }
+
+        input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.7); }
+
+        .firework { position: absolute; width: 5px; height: 5px; background: #fff; border-radius: 50%; animation: explode 1.5s ease-out; }
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(20); opacity: 0; }
         }
 
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--christmas-red); }
-            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--christmas-green), 0 0 40px var(--christmas-gold); }
-        }
-        .countdown {
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            margin: calc(var(--spacing-unit) * 1.5) 0;
-            color: var(--christmas-gold);
-            background: rgba(22, 91, 51, 0.3);
-            padding: 15px 30px;
-            border-radius: 25px;
-            border: 2px solid var(--christmas-gold);
-        }
-
-        .message-area {
-            width: min(90vw, 500px);
-            margin-top: calc(var(--spacing-unit) * 0.7);
-            background: rgba(212, 36, 38, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px solid var(--christmas-gold);
-        }
-
-        .message-title {
-            color: var(--christmas-gold);
-            margin-bottom: var(--spacing-unit);
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
-        }
-
-        .name-input {
-            width: 100%;
-            height: 45px;
-            border-radius: 25px;
-            padding: 0 calc(var(--spacing-unit) * 1.5);
-            background-color: rgba(255, 0, 0, 0.2);
-            color: var(--text-color);
-            border: 2px solid red;
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            margin-bottom: var(--spacing-unit);
-        }
-        .message-input {
-            width: 100%;
-            border-radius: 25px;
-            padding: calc(var(--spacing-unit) * 1.5);
-            background-color: rgba(255, 0, 0, 0.2);
-            color: var(--text-color);
-            border: 2px solid red;
-            resize: none;
-            margin-bottom: var(--spacing-unit);
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            height: clamp(100px, 15vh, 150px);
-        }
-
-        .send-button {
-            padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 2);
-            background: var(--secondary-color);
-            color: var(--text-color);
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: clamp(1rem, 2vw, 1.1rem);
-            transition: all 0.3s ease;
-        }
-
-        .send-button:hover {
-            transform: scale(1.05);
-            background: #45a049;
-        }
-
-        .success-message {
-            display: none;
-            color: #4CAF50;
-            font-size: 1.2rem;
-            margin-top: 10px;
-        }
-        #messageForm.submitted .success-message {
-            display: block;
-        }
-
-        .sender-info {
-            margin: 40px;
-            padding: 15px;
-            border: 2px solid var(--christmas-gold);
-            border-radius: 20px;
-            background: rgba(0,0,0,0.3);
-        }
-
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            background: linear-gradient(135deg, var(--christmas-red), var(--christmas-green));
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            z-index: 1000;
-            text-align: center;
-            border: 3px solid var(--christmas-gold);
-        }
-
-        .popup-content {
-            color: white;
-            font-size: 1.2rem;
-        }
-        .popup-content h2 {
-            margin-bottom: 25px;
-        }
-
-        .popup-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: white;
-            cursor: pointer;
-            font-size: 24px;
-        }
-
-        input::placeholder, textarea::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+        .firework-particle { position: absolute; width: 3px; height: 3px; background: #ff0; border-radius: 50%; animation: particle 1s ease-out; }
+        @keyframes particle {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
         }
     </style>
 </head>
@@ -285,36 +86,31 @@
     <div class="snowfall"></div>
     <div class="christmas-designs"></div>
     <div class="stars"></div>
-    
+    <div class="fireworks"></div>
+    <audio id="backgroundMusic" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
+    <audio id="fireworkSound"><source src="https://www.soundjay.com/misc/sounds/fireworks-1.mp3" type="audio/mpeg"></audio>
+
     <div class="popup" id="successPopup">
         <span class="popup-close" onclick="closePopup()">×</span>
         <div class="popup-content">
             <h2>🎄 Message Sent! 🎄</h2>
             <p>Your wishes have been delivered to Mina!</p>
-            <div style="margin-top: 20px;">
-                🎅 Ho Ho Ho! 🎁
-            </div>
+            <div style="margin-top: 20px;">🎅 Ho Ho Ho! 🎁</div>
         </div>
     </div>
+
     <div class="content">
         <h1>Mina Habib Wishes You</h1>
         <h1>🎄 A Happy New Year 2025! 🎄</h1>
         <div class="countdown" id="countdown"></div>
         <h2>May your 2025 be filled with endless joy, remarkable success, and boundless happiness!</h2>
-        
         <div class="sender-info">
             <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--christmas-gold); font-weight: bold;">From: Mina Habib</p>
         </div>
-        
         <div class="message-area">
-            <form id="messageForm" 
-                  action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" 
-                  method="post" 
-                  target="hidden_iframe" 
-                  onsubmit="showPopup(); return true;">
+            <form id="messageForm" action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" method="post" target="hidden_iframe" onsubmit="showPopup(); return true;">
                 <h3 class="message-title">🎄 Type Your Name Here 🎄</h3>
                 <input type="text" name="entry.1390583614" id="nameInput" class="name-input" placeholder="Enter your name..." required>
-                
                 <h3 class="message-title">🎅 Leave A Message To Mina 🎅</h3>
                 <textarea name="entry.51159881" id="messageInput" class="message-input" placeholder="Type your message here..." required></textarea>
                 <button type="submit" class="send-button">🎄 Send The Message To Mina 🎄</button>
@@ -322,71 +118,70 @@
             <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
     </div>
+
     <script>
-        function createSnowflake() {
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
+        const createElement = (tag, className, parent) => {
+            const el = document.createElement(tag);
+            el.className = className;
+            parent.appendChild(el);
+            return el;
+        };
+
+        const createSnowflake = () => {
+            const snowflake = createElement('div', 'snowflake', document.querySelector('.snowfall'));
             snowflake.style.left = Math.random() * 100 + 'vw';
             snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.querySelector('.snowfall').appendChild(snowflake);
-            
             setTimeout(() => snowflake.remove(), 5000);
-        }
+        };
 
-        function createChristmasItem() {
+        const createChristmasItem = () => {
             const items = ['🎄', '🎅', '🎁', '⭐', '🔔', '❄️'];
-            const item = document.createElement('div');
-            item.className = 'christmas-item';
+            const item = createElement('div', 'christmas-item', document.querySelector('.christmas-designs'));
             item.textContent = items[Math.floor(Math.random() * items.length)];
             item.style.left = Math.random() * 100 + 'vw';
             item.style.animationDuration = Math.random() * 10 + 15 + 's';
-            document.querySelector('.christmas-designs').appendChild(item);
-            
             setTimeout(() => item.remove(), 25000);
-        }
+        };
+
+        const createFirework = () => {
+            const firework = createElement('div', 'firework', document.querySelector('.fireworks'));
+            firework.style.left = Math.random() * 100 + 'vw';
+            firework.style.top = Math.random() * 100 + 'vh';
+            document.getElementById('fireworkSound').play();
+
+            // Create particles
+            for (let i = 0; i < 50; i++) {
+                const particle = createElement('div', 'firework-particle', firework);
+                const angle = Math.random() * 2 * Math.PI;
+                const distance = Math.random() * 100;
+                particle.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+                particle.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+                particle.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`;
+            }
+
+            setTimeout(() => firework.remove(), 1500);
+        };
 
         setInterval(createSnowflake, 100);
         setInterval(createChristmasItem, 2000);
+        setInterval(createFirework, 3000);
 
-        function showPopup() {
-            setTimeout(() => {
-                document.getElementById('successPopup').style.display = 'block';
-            }, 1000);
-        }
+        const showPopup = () => setTimeout(() => document.getElementById('successPopup').style.display = 'block', 1000);
+        const closePopup = () => document.getElementById('successPopup').style.display = 'none';
 
-        function closePopup() {
-            document.getElementById('successPopup').style.display = 'none';
-        }
-
-        function updateCountdown() {
+        const updateCountdown = () => {
             const now = new Date();
             const newYear = new Date(2026, 0, 1);
             const diff = newYear - now;
-            
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
             document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s until 2026`;
-        }
-
-        window.addEventListener('load', function() {
-            const form = document.getElementById('messageForm');
-            const iframe = document.getElementById('hidden_iframe');
-            iframe.addEventListener('load', function() {
-                if(submitted) {
-                    form.reset();
-                    form.classList.add('submitted');
-                    setTimeout(() => {
-                        form.classList.remove('submitted');
-                    }, 3000);
-                    submitted = false;
-                }
-            });
-        });
+        };
 
         window.addEventListener('load', () => {
+            document.getElementById('backgroundMusic').play();
             setInterval(updateCountdown, 1000);
             updateCountdown();
         });
