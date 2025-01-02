@@ -223,19 +223,143 @@
 
     <!-- Content -->
     <div class="content">
-        <h1>Mina Habib Wishes You a Happy New Year 2025!</h1>
+        <h1>Mina Habib Wishes You</h1>
+        <h1>🎄 A Happy New Year 2025! 🎄</h1>
         <div class="countdown" id="countdown"></div>
+        <h2>May your 2025 be filled with endless joy, remarkable success, and boundless happiness!</h2>
+        
+        <div class="sender-info">
+            <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--christmas-gold); font-weight: bold;">
+                From: Mina Habib
+            </p>
+        </div>
 
         <div class="message-area">
-            <div class="message-title">Leave Your Message:</div>
-            <input type="text" class="name-input" id="name" placeholder="Your Name" required>
-            <textarea class="message-input" id="message" placeholder="Your Message" required></textarea>
-            <button class="send-button" onclick="sendMessage()">Send Message</button>
+            <form id="messageForm" action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" method="post" target="hidden_iframe" onsubmit="showPopup(); return true;">
+                <h3 class="message-title">🎄 Type Your Name Here 🎄</h3>
+                <input type="text" name="entry.1390583614" id="nameInput" class="name-input" placeholder="Enter your name..." required>
+                
+                <h3 class="message-title">🎅 Leave A Message To Mina 🎅</h3>
+                <textarea name="entry.51159881" id="messageInput" class="message-input" placeholder="Type your message here..." required></textarea>
+                
+                <button type="submit" class="send-button">🎄 Send The Message To Mina 🎄</button>
+            </form>
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
     </div>
 
     <script>
-        let lastCountdown = '';
+        // Autoplay Background Music
+        const backgroundMusic = document.getElementById('backgroundMusic');
+
+        // Unmute and play the music after a short delay
+        setTimeout(() => {
+            backgroundMusic.muted = false;
+            backgroundMusic.play().catch(() => {});
+        }, 1000); // Delay to ensure the page is fully loaded
+
+        // Animation System
+        const animationSystem = {
+            maxSnowflakes: 69,
+            maxChristmasItems: 69,
+            
+            init() {
+                this.createSnowflakes();
+                this.createChristmasItems();
+            },
+            
+            createSnowflakes() {
+                const snowfall = document.querySelector('.snowfall');
+                for (let i = 0; i < this.maxSnowflakes; i++) {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    snowfall.appendChild(snowflake);
+                    this.animateSnowflake(snowflake);
+                }
+            },
+            
+            animateSnowflake(snowflake) {
+                const { startX, startY, moveX, moveY } = this.getRandomPosition();
+                snowflake.style.left = startX;
+                snowflake.style.top = startY;
+                snowflake.style.setProperty('--moveX', moveX);
+                snowflake.style.setProperty('--moveY', moveY);
+                snowflake.style.animation = float ${Math.random() * 8 + 12}s linear infinite;
+
+                // Restart animation when it ends
+                snowflake.addEventListener('animationend', () => {
+                    this.animateSnowflake(snowflake);
+                });
+            },
+            
+            createChristmasItems() {
+                const christmasDesigns = document.querySelector('.christmas-designs');
+                const items = ['🎄', '🎅', '🎁', '⭐', '🔔', '❄️'];
+                for (let i = 0; i < this.maxChristmasItems; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'christmas-item';
+                    item.textContent = items[Math.floor(Math.random() * items.length)];
+                    christmasDesigns.appendChild(item);
+                    this.animateChristmasItem(item);
+                }
+            },
+            
+            animateChristmasItem(item) {
+                const { startX, startY, moveX, moveY } = this.getRandomPosition();
+                item.style.left = startX;
+                item.style.top = startY;
+                item.style.setProperty('--moveX', moveX);
+                item.style.setProperty('--moveY', moveY);
+                item.style.animation = float ${Math.random() * 30 + 30}s linear infinite;
+
+                // Restart animation when it ends
+                item.addEventListener('animationend', () => {
+                    this.animateChristmasItem(item);
+                });
+            },
+            
+            getRandomPosition() {
+                const origin = Math.random();
+                let startX, startY, moveX, moveY;
+                
+                if (origin < 0.2) {
+                    startX = '50vw';
+                    startY = '50vh';
+                    moveX = (Math.random() - 0.5) * 100;
+                    moveY = (Math.random() - 0.5) * 100;
+                } else if (origin < 0.4) {
+                    startX = Math.random() * 100 + 'vw';
+                    startY = '-5vh';
+                    moveX = (Math.random() - 0.5) * 50;
+                    moveY = Math.random() * 100;
+                } else if (origin < 0.6) {
+                    startX = Math.random() * 100 + 'vw';
+                    startY = '105vh';
+                    moveX = (Math.random() - 0.5) * 50;
+                    moveY = -Math.random() * 100;
+                } else if (origin < 0.8) {
+                    startX = '-5vw';
+                    startY = Math.random() * 100 + 'vh';
+                    moveX = Math.random() * 100;
+                    moveY = (Math.random() - 0.5) * 50;
+                } else {
+                    startX = '105vw';
+                    startY = Math.random() * 100 + 'vh';
+                    moveX = -Math.random() * 100;
+                    moveY = (Math.random() - 0.5) * 50;
+                }
+                
+                return { startX, startY, moveX, moveY };
+            }
+        };
+
+        const showPopup = () => {
+            setTimeout(() => document.getElementById('successPopup').style.display = 'block', 1000);
+        };
+
+        const closePopup = () => {
+            document.getElementById('successPopup').style.display = 'none';
+        };
 
         const updateCountdown = () => {
             const now = new Date();
@@ -245,34 +369,14 @@
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            const countdown = `${days}d ${hours}h ${minutes}m ${seconds}s until 2026`;
-
-            if (countdown !== lastCountdown) {
-                document.getElementById('countdown').innerHTML = countdown;
-                lastCountdown = countdown;
-            }
+            document.getElementById('countdown').innerHTML = ${days}d ${hours}h ${minutes}m ${seconds}s until 2026;
         };
 
-        setInterval(updateCountdown, 1000);
-
-        const sendMessage = () => {
-            const name = document.getElementById('name').value.trim();
-            const message = document.getElementById('message').value.trim();
-
-            if (name && message) {
-                // Simulate sending message (could integrate with backend)
-                document.getElementById('successPopup').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('successPopup').style.display = 'none';
-                }, 3000);
-            } else {
-                alert('Please fill out both fields!');
-            }
-        };
-
-        const closePopup = () => {
-            document.getElementById('successPopup').style.display = 'none';
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            animationSystem.init();
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        });
     </script>
 </body>
 </html>
