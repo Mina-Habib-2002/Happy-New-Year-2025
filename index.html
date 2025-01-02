@@ -15,6 +15,7 @@
             --christmas-green: #165B33;
             --christmas-gold: #FFD700;
             --snow-color: #fff;
+            --neon-red: #FF3131; /* Neon red color */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,16 +64,11 @@
         h1 {
             font-size: clamp(2rem, 5vw, 4rem);
             margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
+            color: var(--neon-red); /* Neon red color */
             border: 3px solid var(--christmas-gold);
             padding: 15px;
             border-radius: 10px;
             background: rgba(212, 36, 38, 0.2);
-        }
-
-        @keyframes glow {
-            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--christmas-green), 0 0 40px var(--christmas-gold); }
         }
 
         .countdown {
@@ -245,20 +241,20 @@
             const newYear = new Date(2026, 0, 1); // January 1, 2026
             const diff = newYear - now;
 
-            // Calculate months, weeks, days, hours, and minutes
+            // Calculate total months, weeks, days, hours, and minutes
             const totalMonths = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
             const remainingAfterMonths = diff % (1000 * 60 * 60 * 24 * 30);
 
-            const totalWeeks = Math.floor(remainingAfterMonths / (1000 * 60 * 60 * 24 * 7));
-            const remainingAfterWeeks = remainingAfterMonths % (1000 * 60 * 60 * 24 * 7);
+            const totalWeeks = Math.floor(diff / (1000 * 60 * 60 * 24 * 7));
+            const remainingAfterWeeks = diff % (1000 * 60 * 60 * 24 * 7);
 
-            const totalDays = Math.floor(remainingAfterWeeks / (1000 * 60 * 60 * 24));
-            const remainingAfterDays = remainingAfterWeeks % (1000 * 60 * 60 * 24);
+            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const remainingAfterDays = diff % (1000 * 60 * 60 * 24);
 
-            const totalHours = Math.floor(remainingAfterDays / (1000 * 60 * 60));
-            const remainingAfterHours = remainingAfterDays % (1000 * 60 * 60);
+            const totalHours = Math.floor(diff / (1000 * 60 * 60));
+            const remainingAfterHours = diff % (1000 * 60 * 60);
 
-            const totalMinutes = Math.floor(remainingAfterHours / (1000 * 60));
+            const totalMinutes = Math.floor(diff / (1000 * 60));
 
             // Update the countdown display
             document.getElementById('countdown').innerHTML = `
