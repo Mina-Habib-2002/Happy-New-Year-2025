@@ -238,10 +238,11 @@
 <body>
     <div class="background"></div>
 
-    <audio id="backgroundMusic" loop autoplay preload="auto">
+    <audio id="backgroundMusic" loop autoplay muted preload="auto">
         <source src="https://raw.githubusercontent.com/Mina-Habib-2002/Happy-New-Year-2025/f8ac3a2cabc742ead6d6751195dbfe75b07fa28d/Background%20Music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
     <!-- Popup -->
     <div class="popup" id="successPopup">
         <span class="popup-close" onclick="closePopup()">×</span>
@@ -282,8 +283,14 @@
         // Auto-play background music
         window.onload = function() {
             const audio = document.getElementById('backgroundMusic');
+            audio.muted = false; // Unmute the audio
             audio.play().catch(function(error) {
                 console.log("Audio autoplay failed:", error);
+                // If autoplay fails, show a message or button to allow user to play the audio
+                alert("Please click anywhere on the page to allow background music to play.");
+                document.body.addEventListener('click', function() {
+                    audio.play();
+                }, { once: true });
             });
         };
 
