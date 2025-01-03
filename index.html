@@ -281,13 +281,30 @@
     </div>
     <script>
         // Auto-play background music
-        window.onload = function() {
-            const audio = document.getElementById('backgroundMusic');
+        const audio = document.getElementById('backgroundMusic');
+
+        // Attempt to autoplay the music
+        const playMusic = () => {
             audio.muted = false; // Unmute the audio
-            audio.play().catch(function(error) {
-                console.log("Audio autoplay failed:", error);
+            audio.play().catch(() => {
+                // If autoplay fails, listen for user interaction
+                const handleUserInteraction = () => {
+                    audio.play();
+                    // Remove event listeners after the first interaction
+                    window.removeEventListener('click', handleUserInteraction);
+                    window.removeEventListener('scroll', handleUserInteraction);
+                    window.removeEventListener('touchstart', handleUserInteraction);
+                };
+
+                // Listen for click, scroll, or touch events
+                window.addEventListener('click', handleUserInteraction);
+                window.addEventListener('scroll', handleUserInteraction);
+                window.addEventListener('touchstart', handleUserInteraction);
             });
         };
+
+        // Try to play the music when the page loads
+        window.onload = playMusic;
 
         // Create festive elements
         function createFestiveElements() {
