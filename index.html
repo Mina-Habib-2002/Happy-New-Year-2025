@@ -17,83 +17,22 @@
             --snow-color: #fff;
             --neon-red: #FF3131;
             --neon-gold: #FFD700;
+            --input-text-color: #00ff00; /* Green typing text */
         }
 
-        /* New Festive Animations */
-        .festive-element {
-            position: fixed;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .snowflake {
-            position: fixed;
-            color: #fff;
-            font-size: 1em;
-            animation: snowfall linear infinite;
-        }
-
-        @keyframes snowfall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-            }
-        }
-
-        .floating-item {
-            position: fixed;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-20px) rotate(5deg);
-            }
-        }
-
-        .firework {
-            position: fixed;
-            width: 5px;
-            height: 5px;
-            animation: explode 1s ease-out forwards;
-        }
-
-        @keyframes explode {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(30);
-                opacity: 0;
-            }
-        }
-
-        .santa {
-            position: fixed;
-            animation: flyAcross 15s linear infinite;
-        }
-
-        @keyframes flyAcross {
-            0% {
-                transform: translateX(-100vw);
-            }
-            100% {
-                transform: translateX(100vw);
-            }
-        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body { 
             height: 100%; 
             overflow-x: hidden; 
             font-family: Arial, sans-serif; 
-            background: #000;
+            scrollbar-width: none; /* Hide scrollbars in Firefox */
+            -ms-overflow-style: none; /* Hide scrollbars in IE/Edge */
+        }
+
+        /* Hide scrollbars in Chrome/Safari */
+        body::-webkit-scrollbar {
+            display: none;
         }
 
         .background {
@@ -104,17 +43,25 @@
             height: 100vh;
             pointer-events: none;
             overflow: hidden;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            perspective: 1000px;
             background: url('https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg') center center/cover;
-            opacity: 0.6;
             z-index: 0;
+        }
+
+        /* Semi-transparent black overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            z-index: 1; /* Above the background but below content */
+            pointer-events: none; /* Allow clicks to pass through */
         }
 
         .content {
             position: relative;
-            z-index: 2;
+            z-index: 2; /* Content is above the overlay */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -122,7 +69,6 @@
             align-items: center;
             text-align: center;
             color: var(--text-color);
-            background: rgba(0, 0, 0, 0.5);
             padding: clamp(0.5rem, 2vw, 1.5rem);
             padding-top: 120px;
         }
@@ -146,6 +92,7 @@
             border-radius: 25px;
             border: 2px solid var(--christmas-gold);
         }
+
         .message-area {
             width: min(90vw, 500px);
             margin-top: calc(clamp(0.5rem, 2vw, 1.5rem) * 0.7);
@@ -163,13 +110,14 @@
 
         .name-input, .message-input {
             width: 100%;
-            border-radius: 25px;
+            border-radius: 15px;
             padding: 0 calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5);
-            background-color: rgba(255, 0, 0, 0.2);
-            color: var(--text-color);
-            border: 2px solid red;
+            background-color: var(--christmas-red); /* Red background */
+            color: var(--input-text-color); /* Green typing text */
+            border: 2px solid var(--christmas-gold);
             font-size: clamp(1rem, 2vw, 1.2rem);
             margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
+            transition: all 0.3s ease;
         }
 
         .name-input { height: 50px; }
@@ -178,6 +126,20 @@
             height: clamp(100px, 15vh, 150px);
             resize: none;
             padding: calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5);
+            overflow-y: auto; /* Enable scrolling */
+            scrollbar-width: none; /* Hide scrollbar in Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
+        }
+
+        /* Hide scrollbar in Chrome/Safari */
+        .message-input::-webkit-scrollbar {
+            display: none;
+        }
+
+        .name-input:focus, .message-input:focus {
+            outline: none;
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 10px var(--neon-gold);
         }
 
         .send-button {
@@ -189,12 +151,37 @@
             cursor: pointer;
             font-size: clamp(1rem, 2vw, 1.1rem);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .send-button:hover {
             transform: scale(1.05);
             background: #45a049;
         }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        .send-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 70%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+            pointer-events: none;
+        }
+
+        .send-button:active::after {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+        }
+
         .sender-info {
             margin: 40px;
             padding: 15px;
@@ -232,11 +219,34 @@
         input::placeholder, textarea::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
+
+        /* Snowflakes and Christmas Elements Animation */
+        .falling-element {
+            position: fixed;
+            color: var(--snow-color);
+            font-size: 1em;
+            animation: snowfall linear infinite;
+            pointer-events: none;
+            z-index: 3; /* Above the content */
+            top: -10vh; /* Start above the screen */
+        }
+
+        @keyframes snowfall {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
     </style>
 </head>
 
 <body>
+    <!-- Fireworks Canvas -->
+    <canvas id="fireworksCanvas" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1;"></canvas>
+
+    <!-- Background Image -->
     <div class="background"></div>
+
+    <!-- Semi-transparent black overlay -->
+    <div class="overlay"></div>
 
     <audio id="backgroundMusic" loop autoplay muted preload="auto">
         <source src="https://raw.githubusercontent.com/Mina-Habib-2002/Happy-New-Year-2025/f8ac3a2cabc742ead6d6751195dbfe75b07fa28d/Background%20Music.mp3" type="audio/mpeg">
@@ -269,93 +279,123 @@
         <div class="message-area">
             <form id="messageForm" action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" method="post" target="hidden_iframe" onsubmit="showPopup(); return true;">
                 <h3 class="message-title">🎄 Type What Mina Calls You 🎄</h3>
-                <input type="text" name="entry.1390583614" id="nameInput" class="name-input" placeholder="Enter a name..." required>
+                <input type="text" name="entry.1390583614" id="nameInput" class="name-input" placeholder="Enter a name..." required
+                       oninvalid="this.setCustomValidity('Why you don\'t want to enter your name?')"
+                       oninput="this.setCustomValidity('')">
                 
                 <h3 class="message-title">🎅 Drop Mina a New Year cheer! 🎅</h3>
-                <textarea name="entry.51159881" id="messageInput" class="message-input" placeholder="Type a message here..." required></textarea>
+                <textarea name="entry.51159881" id="messageInput" class="message-input" placeholder="Type A Long Message As Much As You Can Here" required
+                          oninvalid="this.setCustomValidity('Why you don\'t want to type a message for Mina?')"
+                          oninput="this.setCustomValidity('')"></textarea>
                 
                 <button type="submit" class="send-button">🎄 Send The Message To Mina 🎄</button>
             </form>
             <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
     </div>
+
     <script>
         // Auto-play background music
-        window.onload = function() {
-            const audio = document.getElementById('backgroundMusic');
-            audio.muted = false; // Unmute the audio
-            audio.play().catch(function(error) {
-                console.log("Audio autoplay failed:", error);
-                // If autoplay fails, show a message or button to allow user to play the audio
-                alert("Please click anywhere on the page to allow background music to play.");
-                document.body.addEventListener('click', function() {
+        const audio = document.getElementById('backgroundMusic');
+        const playMusic = () => {
+            audio.muted = false;
+            audio.play().catch(() => {
+                // If autoplay fails, request user interaction
+                document.body.addEventListener('click', () => {
                     audio.play();
                 }, { once: true });
             });
         };
 
-        // Create festive elements
-        function createFestiveElements() {
-            // Create snowflakes
-            for(let i = 0; i < 50; i++) {
-                createSnowflake();
+        // Start music immediately
+        window.addEventListener('load', playMusic);
+
+        // Fireworks Animation
+        const canvas = document.getElementById('fireworksCanvas'),
+              ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+
+        class Particle {
+            constructor(x, y, color, vx, vy) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.vx = vx;
+                this.vy = vy;
+                this.opacity = 1;
+                this.life = 100;
             }
-            
-            // Create floating items (trees, presents)
-            const items = ['🎄', '🎁', '⭐', '🎅'];
-            for(let i = 0; i < 20; i++) {
-                createFloatingItem(items[Math.floor(Math.random() * items.length)]);
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.opacity -= 0.01;
+                this.life--;
             }
-            
-            // Create periodic fireworks
-            setInterval(createFirework, 2000);
-            
-            // Create flying Santa
-            setInterval(createSanta, 10000);
+            draw() {
+                if (this.opacity > 0) {
+                    ctx.globalAlpha = this.opacity;
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
         }
 
-        function createSnowflake() {
-            const snowflake = document.createElement('div');
-            snowflake.innerHTML = '❄';
-            snowflake.className = 'snowflake festive-element';
-            snowflake.style.left = Math.random() * 100 + 'vw';
-            snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            document.body.appendChild(snowflake);
-            
-            setTimeout(() => snowflake.remove(), 5000);
-        }
+        const createFirework = () => {
+            const x = Math.random() * canvas.width,
+                  y = Math.random() * canvas.height / 2;
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const count = 50 + Math.random() * 50;
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * 2 * Math.PI,
+                      speed = 2 + Math.random() * 3;
+                particles.push(
+                    new Particle(
+                        x,
+                        y,
+                        color,
+                        Math.cos(angle) * speed,
+                        Math.sin(angle) * speed
+                    )
+                );
+            }
+        };
 
-        function createFloatingItem(emoji) {
-            const item = document.createElement('div');
-            item.innerHTML = emoji;
-            item.className = 'floating-item festive-element';
-            item.style.left = Math.random() * 100 + 'vw';
-            item.style.top = Math.random() * 100 + 'vh';
-            item.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            document.body.appendChild(item);
-        }
+        const animate = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas for each frame
 
-        function createFirework() {
-            const firework = document.createElement('div');
-            firework.className = 'firework festive-element';
-            firework.style.left = Math.random() * 100 + 'vw';
-            firework.style.top = Math.random() * 100 + 'vh';
-            firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            document.body.appendChild(firework);
-            
-            setTimeout(() => firework.remove(), 1000);
-        }
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].life <= 0 || particles[i].opacity <= 0) particles.splice(i, 1);
+            }
 
-        function createSanta() {
-            const santa = document.createElement('div');
-            santa.innerHTML = '🎅';
-            santa.className = 'santa festive-element';
-            santa.style.top = Math.random() * 50 + 'vh';
-            santa.style.fontSize = '40px';
-            document.body.appendChild(santa);
-            
-            setTimeout(() => santa.remove(), 15000);
-        }
+            if (Math.random() < 0.03) createFirework();
+            requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        // Snowflakes and Christmas Elements Animation
+        const createFallingElements = () => {
+            const elements = ['☃︎', '🎅', '🎄', '❄️', '☃️', '🎁', '🦌']; // Updated emojis
+            const element = document.createElement('div');
+            element.className = 'falling-element';
+            element.textContent = elements[Math.floor(Math.random() * elements.length)]; // Randomly select an emoji
+            element.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+            element.style.animationDuration = 5 + Math.random() * 5 + 's'; // Random falling speed
+            element.style.fontSize = 1 + Math.random() * 1.5 + 'rem'; // Random size
+            document.body.appendChild(element);
+            element.addEventListener('animationend', () => element.remove()); // Remove element after animation ends
+        };
+
+        // Create falling elements every 500ms
+        setInterval(createFallingElements, 500);
 
         // Countdown Function
         const updateCountdown = () => {
@@ -368,15 +408,16 @@
             const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
             const totalHours = Math.floor(diff / (1000 * 60 * 60));
             const totalMinutes = Math.floor(diff / (1000 * 60));
+            const totalSeconds = Math.floor(diff / 1000);
 
-            document.getElementById('countdown').innerHTML = `
-                ${totalMonths} months ${totalWeeks} weeks ${totalDays} days<br>
-                ${totalHours}h ${totalMinutes}m until 2026
-            `;
+            document.getElementById('countdown').innerHTML = 
+                `${totalMonths} months ${totalWeeks} weeks ${totalDays} days<br>
+                ${totalHours}h ${totalMinutes}m ${totalSeconds}s until 2026`;
 
             requestAnimationFrame(updateCountdown);
         };
 
+        // Popup Functions
         const showPopup = () => {
             setTimeout(() => document.getElementById('successPopup').style.display = 'block', 1000);
         };
@@ -385,9 +426,9 @@
             document.getElementById('successPopup').style.display = 'none';
         };
 
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             updateCountdown();
-            createFestiveElements();
         });
     </script>
 </body>
