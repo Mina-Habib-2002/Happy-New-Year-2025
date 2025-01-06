@@ -44,7 +44,7 @@
             pointer-events: none;
             overflow: hidden;
             background: url('https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg') center center/cover;
-            z-index: 0;
+            z-index: 0; /* Lowest layer */
         }
 
         /* Semi-transparent black overlay */
@@ -55,13 +55,13 @@
             width: 100vw;
             height: 100vh;
             background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-            z-index: 1; /* Above the background but below content */
+            z-index: 2; /* Above floating elements but below content */
             pointer-events: none; /* Allow clicks to pass through */
         }
 
         .content {
             position: relative;
-            z-index: 2; /* Content is above the overlay */
+            z-index: 3; /* Highest layer, above everything else */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -227,7 +227,7 @@
             font-size: 1em;
             animation: snowfall linear infinite;
             pointer-events: none;
-            z-index: 3; /* Above the content */
+            z-index: 1; /* Above background but below overlay and content */
             top: -10vh; /* Start above the screen */
         }
 
@@ -309,6 +309,19 @@
 
         // Start music immediately
         window.addEventListener('load', playMusic);
+
+        // Retry music playback on user interaction
+        const retryMusic = () => {
+            if (audio.paused) {
+                audio.play().catch(() => {});
+            }
+        };
+
+        // Add event listeners for user interaction
+        document.addEventListener('click', retryMusic);
+        document.addEventListener('scroll', retryMusic);
+        document.addEventListener('touchstart', retryMusic);
+        document.addEventListener('keydown', retryMusic);
 
         // Fireworks Animation
         const canvas = document.getElementById('fireworksCanvas'),
