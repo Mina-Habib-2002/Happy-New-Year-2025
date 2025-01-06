@@ -40,7 +40,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; /* Will be dynamically updated */
             pointer-events: none;
             overflow: hidden;
             background: url('https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg') center center/cover;
@@ -53,7 +53,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; /* Will be dynamically updated */
             background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
             z-index: 2; /* Above floating elements but below content */
             pointer-events: none; /* Allow clicks to pass through */
@@ -62,7 +62,7 @@
         .content {
             position: relative;
             z-index: 3; /* Highest layer, above everything else */
-            min-height: 100vh;
+            min-height: 100vh; /* Will be dynamically updated */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -439,16 +439,19 @@
             document.getElementById('successPopup').style.display = 'none';
         };
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCountdown();
-        });
-
         // Fix extra empty space issue on mobile browsers
-        window.addEventListener('resize', () => {
-            document.body.style.height = window.innerHeight + 'px';
-        });
-        window.dispatchEvent(new Event('resize'));
+        const setViewportHeight = () => {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            document.body.style.height = `${window.innerHeight}px`;
+        };
+
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('load', setViewportHeight);
+        setViewportHeight();
+
+        // Initialize countdown
+        updateCountdown();
     </script>
 </body>
 </html>
