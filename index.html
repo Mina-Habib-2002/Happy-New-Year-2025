@@ -47,16 +47,7 @@
             z-index: 0; /* Lowest layer */
         }
 
-        .falling-element {
-            position: fixed;
-            color: var(--snow-color);
-            font-size: 1em;
-            animation: snowfall linear infinite;
-            pointer-events: none;
-            z-index: 1; /* Above background but below overlay and content */
-            top: -10vh; /* Start above the screen */
-        }
-
+        /* Semi-transparent black overlay */
         .overlay {
             position: fixed;
             top: 0;
@@ -229,6 +220,17 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
+        /* Snowflakes and Christmas Elements Animation */
+        .falling-element {
+            position: fixed;
+            color: var(--snow-color);
+            font-size: 1em;
+            animation: snowfall linear infinite;
+            pointer-events: none;
+            z-index: 1; /* Above background but below overlay and content */
+            top: -10vh; /* Start above the screen */
+        }
+
         @keyframes snowfall {
             0% { transform: translateY(0) rotate(0deg); }
             100% { transform: translateY(110vh) rotate(360deg); }
@@ -246,7 +248,7 @@
     <!-- Semi-transparent black overlay -->
     <div class="overlay"></div>
 
-    <audio id="backgroundMusic" loop muted preload="auto">
+    <audio id="backgroundMusic" loop autoplay muted preload="auto">
         <source src="https://raw.githubusercontent.com/Mina-Habib-2002/Happy-New-Year-2025/f8ac3a2cabc742ead6d6751195dbfe75b07fa28d/Background%20Music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -293,50 +295,33 @@
     </div>
 
     <script>
-        // Get the audio element
+        // Auto-play background music
         const audio = document.getElementById('backgroundMusic');
-
-        // Function to attempt playing the music
         const playMusic = () => {
-            audio.muted = false; // Unmute the audio
-            audio.play().then(() => {
-                console.log('Music is playing!');
-            }).catch((error) => {
-                console.log('Autoplay failed:', error);
-                // If autoplay fails, wait for user interaction
-                waitForUserInteraction();
+            audio.muted = false;
+            audio.play().catch(() => {
+                // If autoplay fails, request user interaction
+                document.body.addEventListener('click', () => {
+                    audio.play();
+                }, { once: true });
             });
         };
 
-        // Function to wait for user interaction and retry playback
-        const waitForUserInteraction = () => {
-            const retryPlayback = () => {
-                audio.play().then(() => {
-                    console.log('Music started after user interaction!');
-                }).catch((error) => {
-                    console.log('Playback failed after interaction:', error);
-                });
-            };
-
-            // Retry playback on user interaction
-            document.addEventListener('click', retryPlayback, { once: true });
-            document.addEventListener('touchstart', retryPlayback, { once: true });
-            document.addEventListener('scroll', retryPlayback, { once: true });
-        };
-
-        // Attempt to play music when the page loads
+        // Start music immediately
         window.addEventListener('load', playMusic);
 
-        // Retry playback on scroll
-        document.addEventListener('scroll', () => {
+        // Retry music playback on user interaction
+        const retryMusic = () => {
             if (audio.paused) {
-                audio.play().then(() => {
-                    console.log('Music started after scrolling!');
-                }).catch((error) => {
-                    console.log('Playback failed after scrolling:', error);
-                });
+                audio.play().catch(() => {});
             }
-        });
+        };
+
+        // Add event listeners for user interaction
+        document.addEventListener('click', retryMusic);
+        document.addEventListener('scroll', retryMusic);
+        document.addEventListener('touchstart', retryMusic);
+        document.addEventListener('keydown', retryMusic);
 
         // Fireworks Animation
         const canvas = document.getElementById('fireworksCanvas'),
@@ -458,6 +443,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateCountdown();
         });
+
+        // Fix extra empty space issue on mobile browsers
+        window.addEventListener('resize', () => {
+            document.body.style.height = window.innerHeight + 'px';
+        });
+        window.dispatchEvent(new Event('resize'));
     </script>
 </body>
 </html>
