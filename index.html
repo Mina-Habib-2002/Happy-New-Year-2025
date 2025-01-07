@@ -17,7 +17,7 @@
             --snow-color: #fff;
             --neon-red: #FF3131;
             --neon-gold: #FFD700;
-            --input-text-color: #00ff00; /* Green typing text */
+            --input-text-color: #ff0000; /* Red typing text */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -112,8 +112,8 @@
             width: 100%;
             border-radius: 15px;
             padding: 0 calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5);
-            background-color: var(--christmas-red); /* Red background */
-            color: var(--input-text-color); /* Green typing text */
+            background-color: var(--christmas-green); /* Green background */
+            color: var(--input-text-color); /* Red typing text */
             border: 2px solid var(--christmas-gold);
             font-size: clamp(1rem, 2vw, 1.2rem);
             margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
@@ -401,14 +401,14 @@
             element.className = 'falling-element';
             element.textContent = elements[Math.floor(Math.random() * elements.length)]; // Randomly select an emoji
             element.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
-            element.style.animationDuration = 5 + Math.random() * 5 + 's'; // Random falling speed
+            element.style.animationDuration = 10 + Math.random() * 10 + 's'; // Slower falling speed
             element.style.fontSize = 1 + Math.random() * 1.5 + 'rem'; // Random size
             document.body.appendChild(element);
             element.addEventListener('animationend', () => element.remove()); // Remove element after animation ends
         };
 
         // Create falling elements every 500ms
-        setInterval(createFallingElements, 500);
+        setInterval(createFallingElements, 1000); // Reduced number of elements
 
         // Countdown Function
         const updateCountdown = () => {
