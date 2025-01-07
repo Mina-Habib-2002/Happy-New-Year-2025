@@ -87,7 +87,7 @@
             font-size: clamp(1.5rem, 4vw, 2rem);
             margin: calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5) 0;
             color: var(--christmas-gold);
-            background: rgba(22, 91, 51, 0.3);
+            background: rgba(22, 91, 51, 0.3); /* Semi-transparent green */
             padding: 15px 30px;
             border-radius: 25px;
             border: 2px solid var(--christmas-gold);
@@ -112,7 +112,7 @@
             width: 100%;
             border-radius: 15px;
             padding: 0 calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5);
-            background-color: var(--christmas-green); /* Green background */
+            background-color: rgba(22, 91, 51, 0.3); /* Semi-transparent green */
             color: var(--input-text-color); /* Red typing text */
             border: 2px solid var(--christmas-gold);
             font-size: clamp(1rem, 2vw, 1.2rem);
@@ -407,8 +407,16 @@
             element.addEventListener('animationend', () => element.remove()); // Remove element after animation ends
         };
 
-        // Create falling elements every 500ms
-        setInterval(createFallingElements, 1000); // Reduced number of elements
+        // Create a fixed number of falling elements initially
+        const createInitialFallingElements = () => {
+            const numberOfElements = 20; // Fixed number of elements
+            for (let i = 0; i < numberOfElements; i++) {
+                createFallingElements();
+            }
+        };
+
+        // Initialize the falling elements
+        createInitialFallingElements();
 
         // Countdown Function
         const updateCountdown = () => {
