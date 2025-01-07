@@ -92,6 +92,13 @@
             padding: 15px 30px;
             border-radius: 25px;
             border: 2px solid var(--christmas-gold);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .countdown div {
+            margin: 5px 0;
         }
 
         .message-area {
@@ -236,6 +243,60 @@
             0% { transform: translateY(0) rotate(0deg); }
             100% { transform: translateY(110vh) rotate(360deg); }
         }
+
+        /* Welcome Popup */
+        .welcome-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            background: linear-gradient(135deg, var(--christmas-red), var(--christmas-green));
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            z-index: 1000;
+            text-align: center;
+            border: 3px solid var(--christmas-gold);
+        }
+
+        .welcome-popup h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--neon-gold);
+            margin-bottom: 20px;
+        }
+
+        .welcome-popup p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .welcome-popup button {
+            padding: 10px 20px;
+            background: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            transition: all 0.3s ease;
+        }
+
+        .welcome-popup button:hover {
+            transform: scale(1.05);
+            background: #3d8b14;
+        }
+
+        .welcome-popup button:active {
+            transform: scale(0.95);
+        }
+
+        .blur {
+            filter: blur(5px);
+        }
     </style>
 </head>
 
@@ -254,21 +315,35 @@
         Your browser does not support the audio element.
     </audio>
 
+    <!-- Welcome Popup -->
+    <div class="welcome-popup" id="welcomePopup">
+        <h2>🎉 Mina Habib Welcomes You! 🎉</h2>
+        <p>Welcome to Mina Habib's New Year Greeting Website!</p>
+        <button onclick="closeWelcomePopup()">OK</button>
+    </div>
+
     <!-- Popup -->
     <div class="popup" id="successPopup">
         <span class="popup-close" onclick="closePopup()">×</span>
         <div class="popup-content">
-            <h2>🎅 Message Sent! 🎅</h2>
+            <h2>🔔 Message Sent! 🔔</h2>
             <p>Your wishes have been delivered to Mina!</p>
-            <div style="margin-top: 20px;">🎅 Ho Ho Ho! 🎁</div>
+            <div style="margin-top: 20px;">🎅🏼 Ho Ho Ho! 🎅🏼</div>
         </div>
     </div>
 
     <!-- Content -->
-    <div class="content">
-        <h1>Mina Habib Wishes You</h1>
-        <h1>🎅 A Happy New Year 2025! 🎅</h1>
-        <div class="countdown" id="countdown"></div>
+    <div class="content" id="content">
+        <h1>🌟 Mina Habib Wishes You 🌟</h1>
+        <h1>🎄 A Happy New Year 2025! 🎄</h1>
+        <div class="countdown" id="countdown">
+            <div>Months: <span id="months">0</span> Left</div>
+            <div>Weeks: <span id="weeks">0</span> Left</div>
+            <div>Days: <span id="days">0</span> Left</div>
+            <div>Hours: <span id="hours">0</span> Left</div>
+            <div>Minutes: <span id="minutes">0</span> Left</div>
+            <div>Seconds: <span id="seconds">0</span> Left</div>
+        </div>
         <h2>May your 2025 be filled with endless joy, remarkable success, and boundless happiness!</h2>
         
         <div class="sender-info">
@@ -279,17 +354,17 @@
 
         <div class="message-area">
             <form id="messageForm" action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" method="post" target="hidden_iframe" onsubmit="showPopup(); return true;">
-                <h3 class="message-title">🎅 Type What Mina Calls You 🎅</h3>
+                <h3 class="message-title">🎄 Type What Mina Calls You 🎄</h3>
                 <input type="text" name="entry.1390583614" id="nameInput" class="name-input" placeholder="Enter a name..." required
                        oninvalid="this.setCustomValidity('Why you don\'t want to enter your name?')"
                        oninput="this.setCustomValidity('')">
                 
-                <h3 class="message-title">🎅 Drop Mina a New Year cheer! 🎅</h3>
+                <h3 class="message-title">🎁 Drop Mina a New Year cheer! 🎁</h3>
                 <textarea name="entry.51159881" id="messageInput" class="message-input" placeholder="Type A Long Message As Much As You Can Here" required
                           oninvalid="this.setCustomValidity('Why you don\'t want to type a message for Mina?')"
                           oninput="this.setCustomValidity('')"></textarea>
                 
-                <button type="submit" class="send-button">🎅 Send The Message To Mina 🎅</button>
+                <button type="submit" class="send-button">🚀 Send The Message To Mina 🚀</button>
             </form>
             <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
@@ -308,21 +383,18 @@
             });
         };
 
-        // Start music immediately
-        window.addEventListener('load', playMusic);
+        // Show welcome popup on page load
+        const welcomePopup = document.getElementById('welcomePopup');
+        const content = document.getElementById('content');
+        welcomePopup.style.display = 'block';
+        content.classList.add('blur');
 
-        // Retry music playback on user interaction
-        const retryMusic = () => {
-            if (audio.paused) {
-                audio.play().catch(() => {});
-            }
+        // Close welcome popup and play music
+        const closeWelcomePopup = () => {
+            welcomePopup.style.display = 'none';
+            content.classList.remove('blur');
+            playMusic();
         };
-
-        // Add event listeners for user interaction
-        document.addEventListener('click', retryMusic);
-        document.addEventListener('scroll', retryMusic);
-        document.addEventListener('touchstart', retryMusic);
-        document.addEventListener('keydown', retryMusic);
 
         // Fireworks Animation
         const canvas = document.getElementById('fireworksCanvas'),
@@ -397,7 +469,7 @@
 
         // Snowflakes and Christmas Elements Animation
         const createFallingElements = () => {
-            const elements = ['☃︎', '🎅', '🎄', '❄️', '☃️', '🎁', '🦌']; // Updated emojis
+            const elements = ['🎅🏼', '🎄', '❄️', '☃️', '🎁', '🦌', '🛷', '🍪']; // Updated emojis
             const element = document.createElement('div');
             element.className = 'falling-element';
             element.textContent = elements[Math.floor(Math.random() * elements.length)]; // Randomly select an emoji
@@ -432,9 +504,12 @@
             const totalMinutes = Math.floor(diff / (1000 * 60));
             const totalSeconds = Math.floor(diff / 1000);
 
-            document.getElementById('countdown').innerHTML = 
-                `${totalMonths} months ${totalWeeks} weeks ${totalDays} days<br>
-                ${totalHours}h ${totalMinutes}m ${totalSeconds}s until 2026`;
+            document.getElementById('months').innerText = totalMonths;
+            document.getElementById('weeks').innerText = totalWeeks;
+            document.getElementById('days').innerText = totalDays;
+            document.getElementById('hours').innerText = totalHours;
+            document.getElementById('minutes').innerText = totalMinutes;
+            document.getElementById('seconds').innerText = totalSeconds;
 
             requestAnimationFrame(updateCountdown);
         };
