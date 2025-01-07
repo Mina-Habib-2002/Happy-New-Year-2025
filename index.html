@@ -71,6 +71,7 @@
             color: var(--text-color);
             padding: clamp(0.5rem, 2vw, 1.5rem);
             padding-top: 120px;
+            padding-bottom: 20px; /* Added padding to prevent button from being hidden */
         }
 
         h1 {
@@ -257,7 +258,7 @@
     <div class="popup" id="successPopup">
         <span class="popup-close" onclick="closePopup()">×</span>
         <div class="popup-content">
-            <h2>🎄 Message Sent! 🎄</h2>
+            <h2>🎅 Message Sent! 🎅</h2>
             <p>Your wishes have been delivered to Mina!</p>
             <div style="margin-top: 20px;">🎅 Ho Ho Ho! 🎁</div>
         </div>
@@ -266,7 +267,7 @@
     <!-- Content -->
     <div class="content">
         <h1>Mina Habib Wishes You</h1>
-        <h1>🎄 A Happy New Year 2025! 🎄</h1>
+        <h1>🎅 A Happy New Year 2025! 🎅</h1>
         <div class="countdown" id="countdown"></div>
         <h2>May your 2025 be filled with endless joy, remarkable success, and boundless happiness!</h2>
         
@@ -278,7 +279,7 @@
 
         <div class="message-area">
             <form id="messageForm" action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" method="post" target="hidden_iframe" onsubmit="showPopup(); return true;">
-                <h3 class="message-title">🎄 Type What Mina Calls You 🎄</h3>
+                <h3 class="message-title">🎅 Type What Mina Calls You 🎅</h3>
                 <input type="text" name="entry.1390583614" id="nameInput" class="name-input" placeholder="Enter a name..." required
                        oninvalid="this.setCustomValidity('Why you don\'t want to enter your name?')"
                        oninput="this.setCustomValidity('')">
@@ -288,7 +289,7 @@
                           oninvalid="this.setCustomValidity('Why you don\'t want to type a message for Mina?')"
                           oninput="this.setCustomValidity('')"></textarea>
                 
-                <button type="submit" class="send-button">🎄 Send The Message To Mina 🎄</button>
+                <button type="submit" class="send-button">🎅 Send The Message To Mina 🎅</button>
             </form>
             <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
