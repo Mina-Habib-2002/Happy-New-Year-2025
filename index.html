@@ -455,7 +455,9 @@
             document.body.style.height = `${window.innerHeight}px`;
         };
 
+        // Update viewport height on resize and orientation change
         window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
         window.addEventListener('load', setViewportHeight);
         setViewportHeight();
 
