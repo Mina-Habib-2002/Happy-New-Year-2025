@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary-color: #ff4081;
-            --secondary-color: #4CAF50;
+            --secondary-color: #41A317; /* Updated send button color */
             --accent-color: #ffd700;
             --text-color: #ffffff;
             --christmas-red: #D42426;
@@ -17,7 +17,7 @@
             --snow-color: #fff;
             --neon-red: #FF3131;
             --neon-gold: #FFD700;
-            --input-text-color: #C11B17;
+            --input-text-color: #C11B17; /* Updated input text color */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -113,7 +113,7 @@
             border-radius: 15px;
             padding: 0 calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5);
             background-color: rgba(22, 91, 51, 0.3); /* Semi-transparent green */
-            color: var(--input-text-color); /* Red typing text */
+            color: var(--input-text-color); /* Updated input text color */
             border: 2px solid var(--christmas-gold);
             font-size: clamp(1rem, 2vw, 1.2rem);
             margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
@@ -144,7 +144,7 @@
 
         .send-button {
             padding: calc(clamp(0.5rem, 2vw, 1.5rem) * 0.8) calc(clamp(0.5rem, 2vw, 1.5rem) * 2);
-            background: var(--secondary-color);
+            background: var(--secondary-color); /* Updated send button color */
             color: var(--text-color);
             border: none;
             border-radius: 20px;
@@ -157,7 +157,7 @@
 
         .send-button:hover {
             transform: scale(1.05);
-            background: #45a049;
+            background: #3d8b14; /* Darker shade for hover */
         }
 
         .send-button:active {
@@ -388,7 +388,7 @@
                 if (particles[i].life <= 0 || particles[i].opacity <= 0) particles.splice(i, 1);
             }
 
-            if (Math.random() < 0.03) createFirework();
+            if (Math.random() < 0.01) createFirework(); // Reduced frequency of fireworks
             requestAnimationFrame(animate);
         };
 
