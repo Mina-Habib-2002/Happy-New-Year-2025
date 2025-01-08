@@ -76,7 +76,7 @@
 
         h1 {
             font-size: clamp(2rem, 5vw, 4rem);
-            margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
+            margin-bottom: clamp(1rem, 3vw, 2rem); /* Consistent spacing */
             color: var(--neon-gold);
             border: 3px solid var(--christmas-gold);
             padding: 15px;
@@ -84,9 +84,20 @@
             background: rgba(212, 36, 38, 0.2);
         }
 
+        .countdown-title-window {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Consistent spacing */
+            color: var(--neon-gold);
+            background: rgba(22, 91, 51, 0.3); /* Semi-transparent green */
+            padding: 15px 30px;
+            border-radius: 25px;
+            border: 2px solid var(--christmas-gold);
+            width: min(90vw, 500px);
+        }
+
         .countdown {
             font-size: clamp(1.5rem, 4vw, 2rem);
-            margin: calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5) 0;
+            margin-bottom: clamp(1rem, 3vw, 2rem); /* Consistent spacing */
             color: var(--christmas-gold);
             background: rgba(22, 91, 51, 0.3); /* Semi-transparent green */
             padding: 15px 30px;
@@ -95,6 +106,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: min(90vw, 500px);
         }
 
         .countdown div {
@@ -103,8 +115,8 @@
 
         .message-area {
             width: min(90vw, 500px);
-            margin-top: calc(clamp(0.5rem, 2vw, 1.5rem) * 0.7);
-            background: rgba(212, 36, 38, 0.1);
+            margin-bottom: clamp(1rem, 3vw, 2rem); /* Consistent spacing */
+            background: rgba(212, 36, 38, 0.2); /* Transparent red background */
             padding: 20px;
             border-radius: 15px;
             border: 2px solid var(--christmas-gold);
@@ -112,7 +124,7 @@
 
         .message-title {
             color: var(--christmas-gold);
-            margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
+            margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Consistent spacing */
             font-size: clamp(1.2rem, 3vw, 1.5rem);
         }
 
@@ -124,7 +136,7 @@
             color: var(--input-text-color); /* Updated input text color */
             border: 2px solid var(--christmas-gold);
             font-size: clamp(1rem, 2vw, 1.2rem);
-            margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
+            margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Consistent spacing */
             transition: all 0.3s ease;
         }
 
@@ -188,14 +200,6 @@
         .send-button:active::after {
             transform: translate(-50%, -50%) scale(1);
             opacity: 0;
-        }
-
-        .sender-info {
-            margin: 40px;
-            padding: 15px;
-            border: 2px solid var(--christmas-gold);
-            border-radius: 20px;
-            background: rgba(0,0,0,0.3);
         }
 
         .popup {
@@ -336,7 +340,12 @@
     <div class="content" id="content">
         <h1>🌟 Mina Habib Wishes You 🌟</h1>
         <h1>🎄 A Happy New Year 2025! 🎄</h1>
-        <div class="countdown" id="countdown">
+
+        <!-- Countdown Title Window -->
+        <div class="countdown-title-window">Countdown Until 2026</div>
+
+        <!-- Countdown Window -->
+        <div class="countdown">
             <div>Months: <span id="months">0</span> Left</div>
             <div>Weeks: <span id="weeks">0</span> Left</div>
             <div>Days: <span id="days">0</span> Left</div>
@@ -344,14 +353,11 @@
             <div>Minutes: <span id="minutes">0</span> Left</div>
             <div>Seconds: <span id="seconds">0</span> Left</div>
         </div>
-        <h2>May your 2025 be filled with endless joy, remarkable success, and boundless happiness!</h2>
-        
-        <div class="sender-info">
-            <p style="font-size: clamp(1.5rem, 4vw, 2rem); color: var(--christmas-gold); font-weight: bold;">
-                From: Mina Habib
-            </p>
-        </div>
 
+        <!-- Quote -->
+        <h2 style="margin-bottom: clamp(1rem, 3vw, 2rem);">May your 2025 be filled with endless joy, remarkable success, and boundless happiness!</h2>
+
+        <!-- Message Area -->
         <div class="message-area">
             <form id="messageForm" action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" method="post" target="hidden_iframe" onsubmit="showPopup(); return true;">
                 <h3 class="message-title">🎄 Type What Mina Calls You 🎄</h3>
