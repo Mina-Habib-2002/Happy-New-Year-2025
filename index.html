@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary-color: #ff4081;
-            --secondary-color: #41A317; /* Updated send button color */
+            --secondary-color: #41A317;
             --accent-color: #ffd700;
             --text-color: #ffffff;
             --christmas-red: #D42426;
@@ -17,7 +17,7 @@
             --snow-color: #fff;
             --neon-red: #FF3131;
             --neon-gold: #FFD700;
-            --input-text-color: #C11B17; /* Updated input text color */
+            --input-text-color: #C11B17;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,11 +26,10 @@
             height: 100%; 
             overflow-x: hidden; 
             font-family: Arial, sans-serif; 
-            scrollbar-width: none; /* Hide scrollbars in Firefox */
-            -ms-overflow-style: none; /* Hide scrollbars in IE/Edge */
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
         }
 
-        /* Hide scrollbars in Chrome/Safari */
         body::-webkit-scrollbar {
             display: none;
         }
@@ -40,29 +39,28 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh; /* Will be dynamically updated */
+            height: 100vh;
             pointer-events: none;
             overflow: hidden;
             background: url('https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg') center center/cover;
-            z-index: 0; /* Lowest layer */
+            z-index: 0;
         }
 
-        /* Semi-transparent black overlay */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh; /* Will be dynamically updated */
-            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-            z-index: 2; /* Above floating elements but below content */
-            pointer-events: none; /* Allow clicks to pass through */
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            pointer-events: none;
         }
 
         .content {
             position: relative;
-            z-index: 3; /* Highest layer, above everything else */
-            min-height: 100vh; /* Will be dynamically updated */
+            z-index: 3;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -71,12 +69,12 @@
             color: var(--text-color);
             padding: clamp(0.5rem, 2vw, 1.5rem);
             padding-top: 120px;
-            padding-bottom: 20px; /* Added padding to prevent button from being hidden */
+            padding-bottom: 20px;
         }
 
         h1 {
             font-size: clamp(2rem, 5vw, 4rem);
-            margin-bottom: clamp(1rem, 3vw, 2rem); /* Consistent spacing */
+            margin-bottom: clamp(1rem, 3vw, 2rem);
             color: var(--neon-gold);
             border: 3px solid var(--christmas-gold);
             padding: 15px;
@@ -86,9 +84,9 @@
 
         .countdown-title-window {
             font-size: clamp(1.5rem, 4vw, 2rem);
-            margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Consistent spacing */
+            margin-bottom: clamp(0.5rem, 2vw, 1rem);
             color: var(--neon-gold);
-            background: rgba(22, 91, 51, 0.3); /* Semi-transparent green */
+            background: rgba(22, 91, 51, 0.3);
             padding: 15px 30px;
             border-radius: 25px;
             border: 2px solid var(--christmas-gold);
@@ -97,9 +95,9 @@
 
         .countdown {
             font-size: clamp(1.5rem, 4vw, 2rem);
-            margin-bottom: clamp(1rem, 3vw, 2rem); /* Consistent spacing */
+            margin-bottom: clamp(1rem, 3vw, 2rem);
             color: var(--christmas-gold);
-            background: rgba(22, 91, 51, 0.3); /* Semi-transparent green */
+            background: rgba(22, 91, 51, 0.3);
             padding: 15px 30px;
             border-radius: 25px;
             border: 2px solid var(--christmas-gold);
@@ -115,8 +113,8 @@
 
         .message-area {
             width: min(90vw, 500px);
-            margin-bottom: clamp(1rem, 3vw, 2rem); /* Consistent spacing */
-            background: rgba(212, 36, 38, 0.2); /* Transparent red background */
+            margin-bottom: clamp(1rem, 3vw, 2rem);
+            background: rgba(212, 36, 38, 0.2);
             padding: 20px;
             border-radius: 15px;
             border: 2px solid var(--christmas-gold);
@@ -124,7 +122,7 @@
 
         .message-title {
             color: var(--christmas-gold);
-            margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Consistent spacing */
+            margin-bottom: clamp(0.5rem, 2vw, 1rem);
             font-size: clamp(1.2rem, 3vw, 1.5rem);
         }
 
@@ -132,11 +130,11 @@
             width: 100%;
             border-radius: 15px;
             padding: 0 calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5);
-            background-color: rgba(22, 91, 51, 0.3); /* Semi-transparent green */
-            color: var(--input-text-color); /* Updated input text color */
+            background-color: rgba(22, 91, 51, 0.3);
+            color: var(--input-text-color);
             border: 2px solid var(--christmas-gold);
             font-size: clamp(1rem, 2vw, 1.2rem);
-            margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Consistent spacing */
+            margin-bottom: clamp(0.5rem, 2vw, 1rem);
             transition: all 0.3s ease;
         }
 
@@ -146,12 +144,11 @@
             height: clamp(100px, 15vh, 150px);
             resize: none;
             padding: calc(clamp(0.5rem, 2vw, 1.5rem) * 1.5);
-            overflow-y: auto; /* Enable scrolling */
-            scrollbar-width: none; /* Hide scrollbar in Firefox */
-            -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
-        /* Hide scrollbar in Chrome/Safari */
         .message-input::-webkit-scrollbar {
             display: none;
         }
@@ -164,7 +161,7 @@
 
         .send-button {
             padding: calc(clamp(0.5rem, 2vw, 1.5rem) * 0.8) calc(clamp(0.5rem, 2vw, 1.5rem) * 2);
-            background: var(--secondary-color); /* Updated send button color */
+            background: var(--secondary-color);
             color: var(--text-color);
             border: none;
             border-radius: 20px;
@@ -177,7 +174,7 @@
 
         .send-button:hover {
             transform: scale(1.05);
-            background: #3d8b14; /* Darker shade for hover */
+            background: #3d8b14;
         }
 
         .send-button:active {
@@ -232,15 +229,24 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* Snowflakes and Christmas Elements Animation */
-        .falling-element {
+        .falling-element-behind {
             position: fixed;
             color: var(--snow-color);
             font-size: 1em;
             animation: snowfall linear infinite;
             pointer-events: none;
-            z-index: 1; /* Above background but below overlay and content */
-            top: -10vh; /* Start above the screen */
+            z-index: 1;
+            top: -10vh;
+        }
+
+        .falling-element-front {
+            position: fixed;
+            color: var(--snow-color);
+            font-size: 1em;
+            animation: snowfall linear infinite;
+            pointer-events: none;
+            z-index: 4;
+            top: -10vh;
         }
 
         @keyframes snowfall {
@@ -248,7 +254,6 @@
             100% { transform: translateY(110vh) rotate(360deg); }
         }
 
-        /* Welcome Popup */
         .welcome-popup {
             display: none;
             position: fixed;
@@ -257,7 +262,8 @@
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 500px;
-            background: linear-gradient(135deg, var(--christmas-red), var(--christmas-green));
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
@@ -303,30 +309,22 @@
         }
     </style>
 </head>
-
 <body>
-    <!-- Fireworks Canvas -->
     <canvas id="fireworksCanvas" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1;"></canvas>
-
-    <!-- Background Image -->
     <div class="background"></div>
-
-    <!-- Semi-transparent black overlay -->
     <div class="overlay"></div>
 
-    <audio id="backgroundMusic" loop autoplay muted preload="auto">
+    <audio id="backgroundMusic" loop preload="auto">
         <source src="https://raw.githubusercontent.com/Mina-Habib-2002/Happy-New-Year-2025/f8ac3a2cabc742ead6d6751195dbfe75b07fa28d/Background%20Music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
-    <!-- Welcome Popup -->
     <div class="welcome-popup" id="welcomePopup">
         <h2>🎉 Mina Habib Welcomes You! 🎉</h2>
         <p>Welcome to Mina Habib's New Year Greeting Website!</p>
         <button onclick="closeWelcomePopup()">OK</button>
     </div>
 
-    <!-- Popup -->
     <div class="popup" id="successPopup">
         <span class="popup-close" onclick="closePopup()">×</span>
         <div class="popup-content">
@@ -336,15 +334,12 @@
         </div>
     </div>
 
-    <!-- Content -->
     <div class="content" id="content">
         <h1>🌟 Mina Habib Wishes You 🌟</h1>
         <h1>🎄 A Happy New Year 2025! 🎄</h1>
 
-        <!-- Countdown Title Window -->
         <div class="countdown-title-window">Countdown Until 2026</div>
 
-        <!-- Countdown Window -->
         <div class="countdown">
             <div>Months: <span id="months">0</span> Left</div>
             <div>Weeks: <span id="weeks">0</span> Left</div>
@@ -354,10 +349,8 @@
             <div>Seconds: <span id="seconds">0</span> Left</div>
         </div>
 
-        <!-- Quote -->
         <h2 style="margin-bottom: clamp(1rem, 3vw, 2rem);">May your 2025 be filled with endless joy, remarkable success, and boundless happiness!</h2>
 
-        <!-- Message Area -->
         <div class="message-area">
             <form id="messageForm" action="https://docs.google.com/forms/d/e/1FAIpQLSekCnCRJ0N41tFULh1QOiaWnFxrrILGzwKsiB64wl1J5A_rdA/formResponse" method="post" target="hidden_iframe" onsubmit="showPopup(); return true;">
                 <h3 class="message-title">🎄 Type What Mina Calls You 🎄</h3>
@@ -377,150 +370,70 @@
     </div>
 
     <script>
-        // Auto-play background music
         const audio = document.getElementById('backgroundMusic');
-        const playMusic = () => {
+        audio.muted = true;
+
+        const welcomePopup = document.getElementById('welcomePopup');
+        const content = document.getElementById('content');
+        welcomePopup.style.display = 'block';
+        content.classList.add('blur');
+
+        const closeWelcomePopup = () => {
+            welcomePopup.style.display = 'none';
+            content.classList.remove('blur');
             audio.muted = false;
             audio.play().catch(() => {
-                // If autoplay fails, request user interaction
                 document.body.addEventListener('click', () => {
                     audio.play();
                 }, { once: true });
             });
         };
 
-        // Show welcome popup on page load
-        const welcomePopup = document.getElementById('welcomePopup');
-        const content = document.getElementById('content');
-        welcomePopup.style.display = 'block';
-        content.classList.add('blur');
-
-        // Close welcome popup and play music
-        const closeWelcomePopup = () => {
-            welcomePopup.style.display = 'none';
-            content.classList.remove('blur');
-            playMusic();
-        };
-
-        // Fireworks Animation
-        const canvas = document.getElementById('fireworksCanvas'),
-              ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const particles = [];
-
-        class Particle {
-            constructor(x, y, color, vx, vy) {
-                this.x = x;
-                this.y = y;
-                this.color = color;
-                this.vx = vx;
-                this.vy = vy;
-                this.opacity = 1;
-                this.life = 100;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.opacity -= 0.01;
-                this.life--;
-            }
-            draw() {
-                if (this.opacity > 0) {
-                    ctx.globalAlpha = this.opacity;
-                    ctx.fillStyle = this.color;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-        }
-
-        const createFirework = () => {
-            const x = Math.random() * canvas.width,
-                  y = Math.random() * canvas.height / 2;
-            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            const count = 50 + Math.random() * 50;
-            for (let i = 0; i < count; i++) {
-                const angle = Math.random() * 2 * Math.PI,
-                      speed = 2 + Math.random() * 3;
-                particles.push(
-                    new Particle(
-                        x,
-                        y,
-                        color,
-                        Math.cos(angle) * speed,
-                        Math.sin(angle) * speed
-                    )
-                );
-            }
-        };
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas for each frame
-
-            for (let i = particles.length - 1; i >= 0; i--) {
-                particles[i].update();
-                particles[i].draw();
-                if (particles[i].life <= 0 || particles[i].opacity <= 0) particles.splice(i, 1);
-            }
-
-            if (Math.random() < 0.01) createFirework(); // Reduced frequency of fireworks
-            requestAnimationFrame(animate);
-        };
-
-        animate();
-
-        // Snowflakes and Christmas Elements Animation
         const createFallingElements = () => {
-            const elements = ['🎅🏼', '🎄', '❄️', '☃️', '🎁', '🦌', '🛷', '🍪']; // Updated emojis
+            const elements = ['🎅🏼', '🎄', '❄️', '☃️', '🎁', '🦌', '🛷', '🍪'];
             const element = document.createElement('div');
-            element.className = 'falling-element';
-            element.textContent = elements[Math.floor(Math.random() * elements.length)]; // Randomly select an emoji
-            element.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
-            element.style.animationDuration = 10 + Math.random() * 10 + 's'; // Slower falling speed
-            element.style.fontSize = 1 + Math.random() * 1.5 + 'rem'; // Random size
+            element.className = Math.random() < 0.5 ? 'falling-element-behind' : 'falling-element-front';
+            element.textContent = elements[Math.floor(Math.random() * elements.length)];
+            element.style.left = Math.random() * 100 + 'vw';
+            element.style.animationDuration = 10 + Math.random() * 10 + 's';
+            element.style.fontSize = 1 + Math.random() * 1.5 + 'rem';
             document.body.appendChild(element);
-            element.addEventListener('animationend', () => element.remove()); // Remove element after animation ends
+            element.addEventListener('animationend', () => element.remove());
         };
 
-        // Create a fixed number of falling elements initially
         const createInitialFallingElements = () => {
-            const numberOfElements = 20; // Fixed number of elements
+            const numberOfElements = 20;
             for (let i = 0; i < numberOfElements; i++) {
                 createFallingElements();
             }
         };
 
-        // Initialize the falling elements
         createInitialFallingElements();
 
-        // Countdown Function
         const updateCountdown = () => {
             const now = new Date();
-            const newYear = new Date(2026, 0, 1);
+            let newYear = new Date(now.getFullYear() + 1, 0, 1);
+            if (now > newYear) {
+                newYear = new Date(now.getFullYear() + 1, 0, 1);
+            }
             const diff = newYear - now;
-
             const totalMonths = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
             const totalWeeks = Math.floor(diff / (1000 * 60 * 60 * 24 * 7));
             const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
             const totalHours = Math.floor(diff / (1000 * 60 * 60));
             const totalMinutes = Math.floor(diff / (1000 * 60));
             const totalSeconds = Math.floor(diff / 1000);
-
             document.getElementById('months').innerText = totalMonths;
             document.getElementById('weeks').innerText = totalWeeks;
             document.getElementById('days').innerText = totalDays;
             document.getElementById('hours').innerText = totalHours;
             document.getElementById('minutes').innerText = totalMinutes;
             document.getElementById('seconds').innerText = totalSeconds;
-
             requestAnimationFrame(updateCountdown);
         };
 
-        // Popup Functions
+        updateCountdown();
+
         const showPopup = () => {
             setTimeout(() => document.getElementById('successPopup').style.display = 'block', 1000);
         };
@@ -529,21 +442,16 @@
             document.getElementById('successPopup').style.display = 'none';
         };
 
-        // Fix extra empty space issue on mobile browsers
         const setViewportHeight = () => {
             const vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
             document.body.style.height = `${window.innerHeight}px`;
         };
 
-        // Update viewport height on resize and orientation change
         window.addEventListener('resize', setViewportHeight);
         window.addEventListener('orientationchange', setViewportHeight);
         window.addEventListener('load', setViewportHeight);
         setViewportHeight();
-
-        // Initialize countdown
-        updateCountdown();
     </script>
 </body>
 </html>
