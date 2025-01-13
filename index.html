@@ -175,7 +175,7 @@
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 500px;
-            background: rgba(0, 0, 0, 0.8);
+            background: linear-gradient(135deg, var(--christmas-red), var(--christmas-green));
             backdrop-filter: blur(5px);
             padding: 30px;
             border-radius: 15px;
@@ -183,6 +183,13 @@
             z-index: 1000;
             text-align: center;
             border: 3px solid var(--christmas-gold);
+            animation: popupExplosion 0.5s ease-out;
+        }
+
+        @keyframes popupExplosion {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
         .popup-close {
@@ -259,9 +266,9 @@
     <div class="popup" id="successPopup">
         <span class="popup-close" onclick="closePopup()">×</span>
         <div class="popup-content">
-            <h2>🔔 Message Sent! 🔔</h2>
-            <p>Your wishes have been delivered to Mina!</p>
-            <div style="margin-top: 20px;">🎅🏼 Ho Ho Ho! 🎅🏼</div>
+            <h2 style="color: var(--neon-gold); margin-bottom: 20px;">🔔 Message Sent! 🔔</h2>
+            <p style="color: var(--text-color);">Your wishes have been delivered to Mina!</p>
+            <div style="margin-top: 20px; color: var(--neon-gold);">🎅🏼 Ho Ho Ho! 🎅🏼</div>
         </div>
     </div>
 
@@ -356,7 +363,12 @@
 
         updateCountdown();
 
-        const showPopup = () => setTimeout(() => document.getElementById('successPopup').style.display = 'block', 1000);
+        const showPopup = () => {
+            const popup = document.getElementById('successPopup');
+            popup.style.display = 'block';
+            popup.style.animation = 'popupExplosion 0.5s ease-out';
+        };
+
         const closePopup = () => document.getElementById('successPopup').style.display = 'none';
 
         const setViewportHeight = () => {
