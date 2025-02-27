@@ -28,6 +28,7 @@
             scrollbar-width: none; 
             -ms-overflow-style: none; 
             overscroll-behavior: none;
+            background-color: #000; /* Fallback background color */
         }
         body::-webkit-scrollbar { display: none; }
 
@@ -39,15 +40,20 @@
             pointer-events: none;
         }
         .background {
-            background: url('https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg') center/cover;
+            background: #000 url('https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg') center/cover no-repeat;
             z-index: 0;
+            will-change: transform; /* Optimize rendering */
         }
-        .overlay { background: rgba(0, 0, 0, 0.5); z-index: 2; }
+        .overlay { 
+            background: rgba(0, 0, 0, 0.5); 
+            z-index: 2; 
+            will-change: opacity; 
+        }
 
         .content {
             position: relative;
             z-index: 3;
-            min-height: 100%;
+            min-height: 100vh; /* Ensure content fills viewport */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -294,8 +300,7 @@
         }
 
         function showPopup() {
-            const popup = document.getElementById('successPopup');
-            popup.style.display = 'block';
+            document.getElementById('successPopup').style.display = 'block';
         }
 
         function closePopup() {
@@ -361,6 +366,11 @@
         initFallingElements();
         updateCountdown();
         animateFireworks();
+
+        // Preload background image to prevent flicker
+        const img = new Image();
+        img.src = 'https://imgcdn.stablediffusionweb.com/2024/10/26/da1bd332-38fa-4e82-a614-deab61758962.jpg';
+        img.onload = () => document.querySelector('.background').style.backgroundImage = `url(${img.src})`;
     </script>
 </body>
 </html>
